@@ -118,50 +118,58 @@ let audioAtualTocando = null;
 let modules = {};
 
 // ===== INICIALIZAÇÃO =====
-function inicializarDadosPadrao() {
+async function inicializarDadosPadrao() {
     const modulosPadrao = {
         1: {
-    title: "Módulo 1: Descobrindo o Ho'oponopono",
-    description: "Introdução à prática havaiana",
-    pages: [
-        {
-            title: "🌺 Aloha! Bem-vindo",
-            content: `<p style="line-height: 1.8; font-size: 1.1em;">Você está prestes a descobrir uma antiga prática havaiana que tem o poder de transformar sua vida através do perdão, gratidão e amor.</p><div style="text-align: center; margin-top: 40px;"><p style="font-size: 1.3em; color: #10b981;">"A paz começa comigo"</p></div>`
+            title: "Módulo 1: Descobrindo o Ho'oponopono",
+            description: "Introdução à prática havaiana - 9 páginas",
+            pages: [
+                {
+                    title: "🌺 Aloha! Bem-vindo",
+                    content: `<p style="line-height: 1.8; font-size: 1.1em;">Você está prestes a descobrir uma antiga prática havaiana que tem o poder de transformar sua vida através do perdão, gratidão e amor.</p><div style="text-align: center; margin-top: 40px;"><p style="font-size: 1.3em; color: #10b981;">"A paz começa comigo"</p></div>`
+                },
+                {
+                    title: "As 4 Frases Sagradas",
+                    content: `<div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center;"><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sou grato</p></div>`
+                },
+                {
+                    title: "Como Praticar",
+                    content: `<p style="line-height: 1.8; font-size: 1.1em;">Simplesmente repita as quatro frases sempre que surgir um problema, conflito ou memória dolorosa.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 20px;">Não precisa entender, apenas confie no processo.</p>`
+                },
+                {
+                    title: "A Origem do Ho'oponopono",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Uma Sabedoria Ancestral</h3><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono é uma antiga prática havaiana de reconciliação e perdão que significa "corrigir" ou "tornar certo".</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Esta técnica sagrada foi usada por gerações para resolver conflitos familiares e comunitários, restaurando a harmonia através do amor incondicional.</p>`
+                },
+                {
+                    title: "Dr. Ihaleakala Hew Len",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">O Mestre Moderno</h3><p style="line-height: 1.8; font-size: 1.1em;">O Dr. Hew Len tornou o Ho'oponopono conhecido mundialmente após curar um hospital psiquiátrico inteiro usando apenas esta técnica.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Ele nunca viu os pacientes pessoalmente - apenas estudou seus prontuários e aplicou Ho'oponopono em si mesmo.</p><div style="text-align: center; margin-top: 30px; font-style: italic; color: #10b981;">"O problema não está neles, está em mim"</div>`
+                },
+                {
+                    title: "100% de Responsabilidade",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">O Conceito Fundamental</h3><p style="line-height: 1.8; font-size: 1.1em;">No Ho'oponopono, você é 100% responsável por tudo que aparece em sua realidade.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Isso não significa culpa, mas sim o poder de transformar qualquer situação através da limpeza interior.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;"><p style="font-size: 1.2em; color: #10b981;">"Se você quer mudar o mundo, comece por você mesmo"</p></div>`
+                },
+                {
+                    title: "Memórias e Programas",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Limpando o Subconsciente</h3><p style="line-height: 1.8; font-size: 1.1em;">Nossas memórias e programas subconscientes criam nossa realidade atual.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">O Ho'oponopono limpa essas memórias, permitindo que a Inteligência Divina flua livremente através de nós.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Quando limpamos uma memória em nós, ela é automaticamente limpa em todos que compartilham essa mesma memória.</p>`
+                },
+                {
+                    title: "A Prática Diária",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Vivendo Ho'oponopono</h3><p style="line-height: 1.8; font-size: 1.1em;">Pratique as 4 frases sempre que:</p><ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;"><li>Surgir um conflito ou problema</li><li>Sentir raiva, medo ou tristeza</li><li>Julgar alguém ou algo</li><li>Quiser limpar memórias antigas</li><li>Desejar paz e harmonia</li></ul><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Lembre-se: você está limpando para si mesmo, não para os outros.</p>`
+                },
+                {
+                    title: "Seu Compromisso",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🙏 Assumindo a Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Você está pronto para assumir 100% de responsabilidade por sua vida?</p><div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.3em; color: #10b981; margin-bottom: 20px;">"Eu me comprometo a praticar Ho'oponopono diariamente"</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sou grato</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #a78bfa;">Parabéns! Você completou o Módulo 1! 🌺</p>`
+                }
+            ]
         },
-        {
-            title: "As 4 Frases Sagradas",
-            content: `<div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center;"><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sou grato</p></div>`
-        },
-        {
-            title: "Como Praticar",
-            content: `<p style="line-height: 1.8; font-size: 1.1em;">Simplesmente repita as quatro frases sempre que surgir um problema, conflito ou memória dolorosa.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 20px;">Não precisa entender, apenas confie no processo.</p>`
-        },
-        {
-            title: "A Origem do Ho'oponopono",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Uma Sabedoria Ancestral</h3><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono é uma antiga prática havaiana de reconciliação e perdão que significa "corrigir" ou "tornar certo".</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Esta técnica sagrada foi usada por gerações para resolver conflitos familiares e comunitários, restaurando a harmonia através do amor incondicional.</p>`
-        },
-        {
-            title: "Dr. Ihaleakala Hew Len",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">O Mestre Moderno</h3><p style="line-height: 1.8; font-size: 1.1em;">O Dr. Hew Len tornou o Ho'oponopono conhecido mundialmente após curar um hospital psiquiátrico inteiro usando apenas esta técnica.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Ele nunca viu os pacientes pessoalmente - apenas estudou seus prontuários e aplicou Ho'oponopono em si mesmo.</p><div style="text-align: center; margin-top: 30px; font-style: italic; color: #10b981;">"O problema não está neles, está em mim"</div>`
-        },
-        {
-            title: "100% de Responsabilidade",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">O Conceito Fundamental</h3><p style="line-height: 1.8; font-size: 1.1em;">No Ho'oponopono, você é 100% responsável por tudo que aparece em sua realidade.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Isso não significa culpa, mas sim o poder de transformar qualquer situação através da limpeza interior.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;"><p style="font-size: 1.2em; color: #10b981;">"Se você quer mudar o mundo, comece por você mesmo"</p></div>`
-        },
-        {
-            title: "Memórias e Programas",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Limpando o Subconsciente</h3><p style="line-height: 1.8; font-size: 1.1em;">Nossas memórias e programas subconscientes criam nossa realidade atual.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">O Ho'oponopono limpa essas memórias, permitindo que a Inteligência Divina flua livremente através de nós.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Quando limpamos uma memória em nós, ela é automaticamente limpa em todos que compartilham essa mesma memória.</p>`
-        },
-        {
-            title: "A Prática Diária",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">Vivendo Ho'oponopono</h3><p style="line-height: 1.8; font-size: 1.1em;">Pratique as 4 frases sempre que:</p><ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;"><li>Surgir um conflito ou problema</li><li>Sentir raiva, medo ou tristeza</li><li>Julgar alguém ou algo</li><li>Quiser limpar memórias antigas</li><li>Desejar paz e harmonia</li></ul><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Lembre-se: você está limpando para si mesmo, não para os outros.</p>`
-        },
-        {
-            title: "Seu Compromisso",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🙏 Assumindo a Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Você está pronto para assumir 100% de responsabilidade por sua vida?</p><div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.3em; color: #10b981; margin-bottom: 20px;">"Eu me comprometo a praticar Ho'oponopono diariamente"</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sou grato</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #a78bfa;">Parabéns! Você completou o Módulo 1! 🌺</p>`
-        }
-    ],
-},
+        // ... outros módulos permanecem iguais
+    };
+
+    // FORÇAR SEMPRE DADOS NOVOS (SEM FIREBASE)
+    modules = modulosPadrao;
+    audiosPersonalizados = [];
+    diaryEntries = StorageManager.loadLocal(StorageManager.KEYS.DIARY, []);
+}
         2: {
             title: "Módulo 2: A Ciência da Responsabilidade",
             description: "100% de responsabilidade",
