@@ -635,15 +635,20 @@ function adicionarElemento(tipo) {
                 </div>
             `;
             break;
-        case 'imagem':
-            novoElemento = `
-                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #ef4444; border-radius: 5px; position: relative;">
-                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
-                    <label style="color: #ef4444; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">🖼️ Imagem</label>
-                    <input type="text" placeholder="URL da imagem..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #ef4444; border-radius: 3px; color: white; font-size: clamp(14px, 3vw, 16px);">
-                </div>
-            `;
-            break;
+       case 'imagem':
+    novoElemento = `
+        <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #ef4444; border-radius: 5px; position: relative;">
+            <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+            <label style="color: #ef4444; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">🖼️ Imagem</label>
+            <input type="file" accept="image/*" onchange="processarImagemUpload(this, ${elementosContador})" style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #ef4444; border-radius: 3px; color: white; font-size: clamp(14px, 3vw, 16px); margin-bottom: 10px;">
+            <div id="preview-${elementosContador}" style="display: none; text-align: center; margin-top: 10px;">
+                <img id="img-preview-${elementosContador}" style="max-width: 100%; max-height: 200px; border-radius: 5px; border: 1px solid #ef4444;">
+                <p style="color: #ef4444; font-size: clamp(10px, 2.5vw, 12px); margin-top: 5px;">Preview da imagem</p>
+            </div>
+            <input type="hidden" id="base64-${elementosContador}" value="">
+        </div>
+    `;
+    break;
         case 'frases4':
             novoElemento = `
                 <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #a78bfa; border-radius: 5px; position: relative;">
@@ -687,6 +692,58 @@ function removerElemento(id) {
         }
     }
 }
+function processarImagemUpload(input, elementoId) {
+    const arquivo = input.files[0];
+    
+    if (!arquivo) {
+        const preview = document.getElementById(`preview-${elementoId}`);
+        if (preview) preview.style.display = 'none';
+        return;
+    }
+    
+    if (!arquivo.type.startsWith('image/')) {
+        ToastManager.error('Por favor, selecione apenas arquivos de imagem!');
+        input.value = '';
+        return;
+    }
+    
+    // Verificar tamanho (máximo 5MB)
+    if (arquivo.size > 5 * 1024 * 1024) {
+        ToastManager.error('Imagem muito grande! Máximo 5MB.');
+        input.value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        const base64 = e.target.result;
+        
+        // Salvar base64 no campo hidden
+        const hiddenInput = document.getElementById(`base64-${elementoId}`);
+        if (hiddenInput) {
+            hiddenInput.value = base64;
+        }
+        
+        // Mostrar preview
+        const preview = document.getElementById(`preview-${elementoId}`);
+        const imgPreview = document.getElementById(`img-preview-${elementoId}`);
+        
+        if (preview && imgPreview) {
+            imgPreview.src = base64;
+            preview.style.display = 'block';
+        }
+        
+        ToastManager.success('Imagem carregada com sucesso! 📸');
+    };
+    
+    reader.onerror = function() {
+        ToastManager.error('Erro ao ler a imagem!');
+        input.value = '';
+    };
+    
+    reader.readAsDataURL(arquivo);
+}
 function adicionarNovaPagina() {
     const modulo = modules[moduloAtualEditor];
     modulo.pages.push({
@@ -728,11 +785,12 @@ function salvarPaginaAtual() {
             const valor = elemento.querySelector('textarea').value;
             htmlFinal += `<p style="line-height: 1.8; font-size: 1.1em; margin-bottom: 15px;">${valor}</p>`;
         } else if (label.includes('Imagem')) {
-            const valor = elemento.querySelector('input').value;
-            if (valor) {
-                htmlFinal += `<div style="text-align: center; margin: 20px 0;"><img src="${valor}" style="max-width: 100%; border-radius: 10px;" alt="Imagem"></div>`;
-            }
-        } else if (label.includes('4 Frases')) {
+    const hiddenInput = elemento.querySelector('input[type="hidden"]');
+    const base64Value = hiddenInput ? hiddenInput.value : '';
+    if (base64Value) {
+        htmlFinal += `<div style="text-align: center; margin: 20px 0;"><img src="${base64Value}" style="max-width: 100%; border-radius: 10px;" alt="Imagem"></div>`;
+    }
+} else if (label.includes('4 Frases')) {
             const inputs = elemento.querySelectorAll('input');
             htmlFinal += `<div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center;">`;
             inputs.forEach(input => {
@@ -1615,3 +1673,4 @@ window.removerElemento = removerElemento;
 window.extrairECriarCamposEditaveis = extrairECriarCamposEditaveis;
 window.adicionarElementoExistente = adicionarElementoExistente;
 window.adicionarElementoEspecial = adicionarElementoEspecial;
+window.processarImagemUpload = processarImagemUpload;
