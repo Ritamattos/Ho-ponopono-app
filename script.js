@@ -1,4 +1,13 @@
-// ===== HO'OPONOPONO APP - SCRIPT COMPLETO E FUNCIONAL =====
+// CORREÇÃO TEMPORÁRIA - ADICIONAR NO INÍCIO
+function entrarApp() {
+    const nome = document.getElementById('name').value.trim() || 'Praticante';
+    userName = nome;
+    document.getElementById('welcome').textContent = `Bem-vindo, ${nome}`;
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+}
+
+// ... resto do seu código JavaScript ...// ===== HO'OPONOPONO APP - SCRIPT COMPLETO E FUNCIONAL =====
 
 // Desabilitar console em produção
 if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
