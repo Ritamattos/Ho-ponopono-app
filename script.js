@@ -1,3 +1,35 @@
+// FUNÇÃO BÁSICA PARA INICIAR - ADICIONAR NO INÍCIO
+function iniciarApp() {
+    console.log("Botão clicado!"); // Para debug
+    
+    const nomeInput = document.getElementById('name');
+    const splash = document.getElementById('splash');
+    const main = document.getElementById('main');
+    const welcome = document.getElementById('welcome');
+    
+    if (!nomeInput || !splash || !main) {
+        alert('Erro: Elementos não encontrados na página!');
+        return;
+    }
+    
+    const nome = nomeInput.value.trim() || 'Praticante';
+    userName = nome;
+    
+    if (welcome) {
+        welcome.textContent = `Bem-vindo, ${nome}`;
+    }
+    
+    splash.style.display = 'none';
+    main.style.display = 'block';
+    
+    // Carregar dados se existirem
+    if (typeof carregarModulosNaInterface === 'function') {
+        carregarModulosNaInterface();
+    }
+}
+
+// Tornar função global
+window.iniciarApp = iniciarApp;
 // CORREÇÃO TEMPORÁRIA - ADICIONAR NO INÍCIO
 function entrarApp() {
     const nome = document.getElementById('name').value.trim() || 'Praticante';
