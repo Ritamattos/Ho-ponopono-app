@@ -214,10 +214,6 @@ async function inicializarDadosPadrao() {
             title: "Módulo 2: A Ciência da Responsabilidade",
             description: "100% de responsabilidade",
             pages: [
-// MÓDULO 2: A CIÊNCIA DA RESPONSABILIDADE - 30 PÁGINAS
-// Conteúdo otimizado para páginas menores, progressão gradual
-
-const modulo2Pages = [
     {
         title: "🌟 Bem-vindo ao Módulo 2",
         content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Aprofundando Sua Jornada</h3>
