@@ -162,14 +162,6 @@ async function inicializarDadosPadrao() {
                 }
             ]
         },
-        // ... outros módulos permanecem iguais
-    };
-
-    // FORÇAR SEMPRE DADOS NOVOS (SEM FIREBASE)
-    modules = modulosPadrao;
-    audiosPersonalizados = [];
-    diaryEntries = StorageManager.loadLocal(StorageManager.KEYS.DIARY, []);
-}
         2: {
             title: "Módulo 2: A Ciência da Responsabilidade",
             description: "100% de responsabilidade",
@@ -196,10 +188,9 @@ async function inicializarDadosPadrao() {
         }
     };
 
-    // Carregar dados salvos ou usar padrão
-    modules = StorageManager.load(StorageManager.KEYS.MODULES, modulosPadrao);
-    audiosPersonalizados = StorageManager.load(StorageManager.KEYS.AUDIOS, []);
-    diaryEntries = StorageManager.load(StorageManager.KEYS.DIARY, []);
+    modules = modulosPadrao;
+    audiosPersonalizados = [];
+    diaryEntries = StorageManager.loadLocal(StorageManager.KEYS.DIARY, []);
 }
 
 // ===== SISTEMA DE ACESSO ADMIN =====
