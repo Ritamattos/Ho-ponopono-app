@@ -2005,7 +2005,4 @@ window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
 window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
-window.showNavigation = showNavigation;
-window.hideNavigation = hideNavigation;
-window.resetNavigationTimer = resetNavigationTimer;
-window.initNavigationAutoHide = initNavigationAutoHide;
+
