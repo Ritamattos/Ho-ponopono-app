@@ -1261,6 +1261,55 @@ function formatarTempo(segundos) {
     
     return `${minutos.toString().padStart(2, '0')}:${seg.toString().padStart(2, '0')}`;
 }
+// ===== EFEITOS SONOROS =====
+function criarSomPagina() {
+    // Criar som de página virando usando Web Audio API
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Criar som sintético de papel
+    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.3, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < buffer.length; i++) {
+        // Som de papel com frequência variável
+        const t = i / audioContext.sampleRate;
+        const freq1 = 800 + Math.sin(t * 20) * 200; // Frequência principal
+        const freq2 = 1200 + Math.sin(t * 15) * 150; // Frequência secundária
+        
+        let sample = Math.sin(2 * Math.PI * freq1 * t) * 0.3;
+        sample += Math.sin(2 * Math.PI * freq2 * t) * 0.2;
+        
+        // Envelope para simular o "whoosh" do papel
+        const envelope = Math.exp(-t * 8) * (1 - Math.exp(-t * 30));
+        
+        // Adicionar ruído para simular textura do papel
+        const noise = (Math.random() - 0.5) * 0.1;
+        
+        data[i] = (sample + noise) * envelope * 0.4;
+    }
+    
+    return buffer;
+}
+
+function tocarSomPagina() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const buffer = criarSomPagina();
+        const source = audioContext.createBufferSource();
+        const gainNode = audioContext.createGain();
+        
+        source.buffer = buffer;
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Volume baixo para não incomodar
+        gainNode.gain.value = 0.3;
+        
+        source.start(0);
+    } catch (error) {
+        // Se não conseguir tocar o som, não faz nada (modo silencioso)
+    }
+}
 
 // ===== NAVEGAÇÃO =====
 function irPara(secao) {
@@ -1369,6 +1418,9 @@ function abrirModulo(num) {
 
 function paginaAnterior() {
     if (currentPage > 1) {
+        // TOCAR SOM DA PÁGINA
+        tocarSomPagina();
+        
         const paginaAtual = document.getElementById(`spread${currentPage}`);
         if (paginaAtual) {
             paginaAtual.className = 'page-spread hidden';
@@ -1387,6 +1439,9 @@ function paginaAnterior() {
 
 function proximaPagina() {
     if (currentPage < totalPages) {
+        // TOCAR SOM DA PÁGINA
+        tocarSomPagina();
+        
         const paginaAtual = document.getElementById(`spread${currentPage}`);
         if (paginaAtual) {
             paginaAtual.className = 'page-spread hidden';
@@ -1674,3 +1729,5 @@ window.extrairECriarCamposEditaveis = extrairECriarCamposEditaveis;
 window.adicionarElementoExistente = adicionarElementoExistente;
 window.adicionarElementoEspecial = adicionarElementoEspecial;
 window.processarImagemUpload = processarImagemUpload;
+window.criarSomPagina = criarSomPagina;
+window.tocarSomPagina = tocarSomPagina;
