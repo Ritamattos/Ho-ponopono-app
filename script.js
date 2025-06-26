@@ -215,6 +215,7 @@ async function inicializarDadosPadrao() {
             description: "100% de responsabilidade",
             pages: [
     {
+    },
         title: "🌟 Bem-vindo ao Módulo 2",
         content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Aprofundando Sua Jornada</h3>
         <p style="line-height: 1.8; font-size: 1.1em;">Agora que você conhece as 4 frases sagradas, vamos mergulhar mais profundo na filosofia do Ho'oponopono.</p>
