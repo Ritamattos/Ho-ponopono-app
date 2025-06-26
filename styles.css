@@ -320,6 +320,7 @@ h1 {
     align-items: center;
     justify-content: center;
     padding: clamp(10px, 3vw, 20px);
+    padding-bottom: 80px !important;
 }
 
 .book {
@@ -367,6 +368,22 @@ h1 {
     height: 100%;
     overflow-y: auto;
     color: #fff;
+    padding-bottom: 60px !important;
+    scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 transparent;
+}
+
+.page-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: #8b5cf6;
+    border-radius: 3px;
 }
 
 .page-content h2 {
@@ -407,24 +424,25 @@ h1 {
     right: 20px;
 }
 
-/* NAVEGAÇÃO DE PÁGINAS CORRIGIDA */
+/* NAVEGAÇÃO DE PÁGINAS CORRIGIDA - AUTO HIDE */
 .book-navigation {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(15px, 4vw, 20px);
-    background: rgba(30, 0, 60, 0.9);
-    backdrop-filter: blur(20px);
-    padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 30px);
-    border-radius: 25px;
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    z-index: 1001;
-    flex-wrap: wrap;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    background: rgba(30, 0, 60, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 25px !important;
+    padding: 10px 20px !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: clamp(15px, 4vw, 20px) !important;
+    flex-wrap: wrap !important;
+    transition: all 0.3s ease !important;
 }
 
 .nav-btn {
@@ -577,34 +595,6 @@ textarea, input[type="text"], input[type="password"], select {
         width: 100%;
     }
     
-    /* Navegação móvel melhorada */
-    .book-navigation {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        transform: none;
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 12px 16px;
-    }
-    
-    .nav-btn {
-        flex: 1;
-        max-width: 100px;
-        min-width: 80px;
-        padding: 10px 8px;
-        font-size: 0.8em;
-    }
-    
-    .page-indicator {
-        order: -1;
-        width: 100%;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-    
     .header {
         flex-direction: column;
         text-align: center;
@@ -616,6 +606,33 @@ textarea, input[type="text"], input[type="password"], select {
     
     #painelAdmin .modules-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* CORREÇÕES ESPECÍFICAS PARA MOBILE */
+    .book-navigation {
+        bottom: 10px !important;
+        left: 10px !important;
+        right: 10px !important;
+        transform: none !important;
+        padding: 8px 15px !important;
+        font-size: 0.8em !important;
+    }
+    
+    .nav-btn {
+        padding: 8px 12px !important;
+        font-size: 0.8em !important;
+        min-width: 70px !important;
+    }
+    
+    .page-indicator {
+        font-size: 0.8em !important;
+        min-width: 100px !important;
+    }
+    
+    .page-content {
+        padding-bottom: 60px !important;
+        max-height: calc(100vh - 140px) !important;
+        overflow-y: auto !important;
     }
 }
 
