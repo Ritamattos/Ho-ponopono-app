@@ -92,7 +92,6 @@ const ToastManager = {
         this.show(message, 'error');
     }
 };
-
 // ===== VARIÁVEIS GLOBAIS =====
 let userName = '';
 let currentPage = 1;
@@ -209,7 +208,6 @@ function contarCliquesSecretos() {
         cliquesSecretos = 0;
     }
 }
-
 // ===== FUNÇÃO PRINCIPAL DE LOGIN =====
 function entrarApp() {
     const nome = document.getElementById('name').value.trim();
@@ -412,7 +410,6 @@ function atualizarEstatisticas() {
     
     if (statAudios) statAudios.textContent = audiosPersonalizados.length;
 }
-
 // ===== CRIAR NOVO MÓDULO =====
 function criarNovoModulo() {
     const titulo = document.getElementById('novoModuloTitulo').value.trim();
@@ -471,6 +468,7 @@ function atualizarListaPaginas() {
     `).join('');
 }
 
+// ===== EDITOR DE PÁGINAS - ATUALIZADO =====
 function editarPagina(index) {
     paginaAtualEditor = index;
     const modulo = modules[moduloAtualEditor];
@@ -481,14 +479,214 @@ function editarPagina(index) {
     document.getElementById('tituloPagina').value = pagina.title;
     
     const areaConteudo = document.getElementById('areaConteudo');
-    areaConteudo.innerHTML = `
-        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px;">
-            <label style="color: #f59e0b; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📄 Conteúdo da Página</label>
-            <textarea id="conteudoPagina" style="width: 100%; height: clamp(200px, 30vw, 300px); padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #f59e0b; border-radius: 3px; color: white; resize: vertical; font-size: clamp(14px, 3vw, 16px);" placeholder="Digite o conteúdo HTML da página...">${pagina.content}</textarea>
-        </div>
-    `;
+    areaConteudo.innerHTML = '';
+    elementosContador = 0;
+    
+    // Se há conteúdo, extrair e criar campos editáveis
+    if (pagina.content && pagina.content.trim()) {
+        extrairECriarCamposEditaveis(pagina.content, areaConteudo);
+    } else {
+        areaConteudo.innerHTML = '<p style="color: #999; text-align: center;">Clique nos botões acima para adicionar elementos à página</p>';
+    }
 }
 
+// Função para extrair conteúdo HTML e criar campos editáveis
+function extrairECriarCamposEditaveis(htmlContent, container) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString('<div>' + htmlContent + '</div>', 'text/html');
+    const elementos = doc.body.firstChild.children;
+    
+    for (let elemento of elementos) {
+        if (elemento.tagName === 'H1' || elemento.tagName === 'H2') {
+            adicionarElementoExistente('titulo', elemento.textContent);
+        } else if (elemento.tagName === 'H3' || elemento.tagName === 'H4') {
+            adicionarElementoExistente('subtitulo', elemento.textContent);
+        } else if (elemento.tagName === 'P') {
+            adicionarElementoExistente('texto', elemento.textContent);
+        } else if (elemento.tagName === 'DIV' && elemento.innerHTML.includes('Sinto muito')) {
+            // Adicionar quadro das 4 frases
+            adicionarElementoEspecial('frases4');
+        }
+    }
+    
+    if (container.children.length === 0) {
+        container.innerHTML = '<p style="color: #999; text-align: center;">Clique nos botões acima para adicionar elementos à página</p>';
+    }
+}
+
+// Função para adicionar elemento existente
+function adicionarElementoExistente(tipo, conteudo) {
+    elementosContador++;
+    const areaConteudo = document.getElementById('areaConteudo');
+    
+    if (areaConteudo.innerHTML.includes('Clique nos botões')) {
+        areaConteudo.innerHTML = '';
+    }
+    
+    let novoElemento = '';
+    
+    switch (tipo) {
+        case 'titulo':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #8b5cf6; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #8b5cf6; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📝 Título</label>
+                    <input type="text" value="${conteudo}" placeholder="Digite o título..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #8b5cf6; border-radius: 3px; color: #8b5cf6; font-size: clamp(14px, 3vw, 16px);">
+                </div>
+            `;
+            break;
+        case 'subtitulo':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #10b981; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #10b981; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📋 Subtítulo</label>
+                    <input type="text" value="${conteudo}" placeholder="Digite o subtítulo..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; font-size: clamp(14px, 3vw, 16px);">
+                </div>
+            `;
+            break;
+        case 'texto':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #f59e0b; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #f59e0b; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📄 Texto</label>
+                    <textarea placeholder="Digite o texto..." style="width: 100%; height: clamp(80px, 20vw, 100px); padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #f59e0b; border-radius: 3px; color: white; resize: vertical; font-size: clamp(14px, 3vw, 16px);">${conteudo}</textarea>
+                </div>
+            `;
+            break;
+    }
+    
+    areaConteudo.insertAdjacentHTML('beforeend', novoElemento);
+}
+// Função para adicionar elementos especiais (como o quadro das 4 frases)
+function adicionarElementoEspecial(tipo) {
+    elementosContador++;
+    const areaConteudo = document.getElementById('areaConteudo');
+    
+    if (areaConteudo.innerHTML.includes('Clique nos botões')) {
+        areaConteudo.innerHTML = '';
+    }
+    
+    if (tipo === 'frases4') {
+        const novoElemento = `
+            <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #a78bfa; border-radius: 5px; position: relative;">
+                <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                <label style="color: #a78bfa; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 10px;">🌺 As 4 Frases Sagradas</label>
+                <div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                    <div style="margin-bottom: 10px;">
+                        <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 1:</label>
+                        <input type="text" value="Sinto muito" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 2:</label>
+                        <input type="text" value="Me perdoe" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 3:</label>
+                        <input type="text" value="Te amo" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                    </div>
+                    <div>
+                        <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 4:</label>
+                        <input type="text" value="Sou grato" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                    </div>
+                </div>
+            </div>
+        `;
+        areaConteudo.insertAdjacentHTML('beforeend', novoElemento);
+    }
+}
+
+// Função principal para adicionar elementos
+function adicionarElemento(tipo) {
+    elementosContador++;
+    const areaConteudo = document.getElementById('areaConteudo');
+    
+    // Remover mensagem padrão se existir
+    if (areaConteudo.innerHTML.includes('Clique nos botões')) {
+        areaConteudo.innerHTML = '';
+    }
+    
+    let novoElemento = '';
+    
+    switch (tipo) {
+        case 'titulo':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #8b5cf6; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #8b5cf6; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📝 Título</label>
+                    <input type="text" placeholder="Digite o título..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #8b5cf6; border-radius: 3px; color: #8b5cf6; font-size: clamp(14px, 3vw, 16px);">
+                </div>
+            `;
+            break;
+        case 'subtitulo':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #10b981; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #10b981; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📋 Subtítulo</label>
+                    <input type="text" placeholder="Digite o subtítulo..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; font-size: clamp(14px, 3vw, 16px);">
+                </div>
+            `;
+            break;
+        case 'texto':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #f59e0b; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #f59e0b; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">📄 Texto</label>
+                    <textarea placeholder="Digite o texto..." style="width: 100%; height: clamp(80px, 20vw, 100px); padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #f59e0b; border-radius: 3px; color: white; resize: vertical; font-size: clamp(14px, 3vw, 16px);"></textarea>
+                </div>
+            `;
+            break;
+        case 'imagem':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #ef4444; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #ef4444; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">🖼️ Imagem</label>
+                    <input type="text" placeholder="URL da imagem..." style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #ef4444; border-radius: 3px; color: white; font-size: clamp(14px, 3vw, 16px);">
+                </div>
+            `;
+            break;
+        case 'frases4':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #a78bfa; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #a78bfa; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 10px;">🌺 As 4 Frases Sagradas</label>
+                    <div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="margin-bottom: 10px;">
+                            <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 1:</label>
+                            <input type="text" value="Sinto muito" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 2:</label>
+                            <input type="text" value="Me perdoe" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 3:</label>
+                            <input type="text" value="Te amo" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                        </div>
+                        <div>
+                            <label style="color: #10b981; font-size: clamp(10px, 2vw, 12px);">Frase 4:</label>
+                            <input type="text" value="Sou grato" style="width: 100%; margin-top: 5px; padding: clamp(4px, 1vw, 6px); background: rgba(0,0,0,0.3); border: 1px solid #10b981; border-radius: 3px; color: #10b981; text-align: center; font-size: clamp(12px, 3vw, 14px);">
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+    }
+    
+    areaConteudo.insertAdjacentHTML('beforeend', novoElemento);
+}
+
+function removerElemento(id) {
+    const elemento = document.querySelector(`[data-elemento="${id}"]`);
+    if (elemento) {
+        elemento.remove();
+        
+        // Se não há mais elementos, mostrar mensagem padrão
+        const areaConteudo = document.getElementById('areaConteudo');
+        if (areaConteudo.children.length === 0) {
+            areaConteudo.innerHTML = '<p style="color: #999; text-align: center;">Clique nos botões acima para adicionar elementos à página</p>';
+        }
+    }
+}
 function adicionarNovaPagina() {
     const modulo = modules[moduloAtualEditor];
     modulo.pages.push({
@@ -503,19 +701,51 @@ function adicionarNovaPagina() {
     editarPagina(modulo.pages.length - 1);
 }
 
+// FUNÇÃO SALVAR PÁGINA ATUALIZADA
 function salvarPaginaAtual() {
     const titulo = document.getElementById('tituloPagina').value.trim();
-    const conteudo = document.getElementById('conteudoPagina').value.trim();
     
     if (!titulo) {
         ToastManager.error('Digite o título da página!');
         return;
     }
     
+    // Gerar HTML a partir dos elementos visuais
+    const areaConteudo = document.getElementById('areaConteudo');
+    let htmlFinal = '';
+    
+    const elementos = areaConteudo.querySelectorAll('[data-elemento]');
+    elementos.forEach(elemento => {
+        const label = elemento.querySelector('label').textContent;
+        
+        if (label.includes('Título')) {
+            const valor = elemento.querySelector('input').value;
+            htmlFinal += `<h2 style="color: #8b5cf6; font-size: 1.5em; margin-bottom: 15px;">${valor}</h2>`;
+        } else if (label.includes('Subtítulo')) {
+            const valor = elemento.querySelector('input').value;
+            htmlFinal += `<h3 style="color: #10b981; font-size: 1.3em; margin-bottom: 10px;">${valor}</h3>`;
+        } else if (label.includes('Texto')) {
+            const valor = elemento.querySelector('textarea').value;
+            htmlFinal += `<p style="line-height: 1.8; font-size: 1.1em; margin-bottom: 15px;">${valor}</p>`;
+        } else if (label.includes('Imagem')) {
+            const valor = elemento.querySelector('input').value;
+            if (valor) {
+                htmlFinal += `<div style="text-align: center; margin: 20px 0;"><img src="${valor}" style="max-width: 100%; border-radius: 10px;" alt="Imagem"></div>`;
+            }
+        } else if (label.includes('4 Frases')) {
+            const inputs = elemento.querySelectorAll('input');
+            htmlFinal += `<div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center;">`;
+            inputs.forEach(input => {
+                htmlFinal += `<p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">${input.value}</p>`;
+            });
+            htmlFinal += `</div>`;
+        }
+    });
+    
     // Salvar no módulo
     const modulo = modules[moduloAtualEditor];
     modulo.pages[paginaAtualEditor].title = titulo;
-    modulo.pages[paginaAtualEditor].content = conteudo;
+    modulo.pages[paginaAtualEditor].content = htmlFinal;
     
     StorageManager.save(StorageManager.KEYS.MODULES, modules);
     
@@ -662,7 +892,6 @@ function ocultarStatusUpload() {
         status.style.display = 'none';
     }
 }
-
 function criarElementoAudio(audioData) {
     const audioGrid = document.querySelector('#audioContent .modules-grid');
     if (!audioGrid) return;
@@ -751,7 +980,6 @@ function excluirAudioCompleto(audioId) {
         ToastManager.error('Erro ao excluir áudio');
     }
 }
-
 function reproduzirAudio(audioId) {
     // Parar qualquer áudio que esteja tocando
     if (audioAtualTocando) {
@@ -987,7 +1215,6 @@ function irPara(secao) {
         contentElement.classList.add('active');
     }
 }
-
 // ===== MÓDULOS E LEITOR =====
 function abrirModulo(num) {
     const module = modules[num];
@@ -1174,7 +1401,6 @@ function atualizarDiario() {
         `).join('');
     }
 }
-
 // ===== COMUNIDADE =====
 function publicarPost() {
     const texto = document.getElementById('postText').value.trim();
@@ -1384,3 +1610,8 @@ window.publicarPost = publicarPost;
 window.mostrarPreview = mostrarPreview;
 window.removerImagem = removerImagem;
 window.comentar = comentar;
+window.adicionarElemento = adicionarElemento;
+window.removerElemento = removerElemento;
+window.extrairECriarCamposEditaveis = extrairECriarCamposEditaveis;
+window.adicionarElementoExistente = adicionarElementoExistente;
+window.adicionarElementoEspecial = adicionarElementoEspecial;
