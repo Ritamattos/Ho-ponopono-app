@@ -1874,6 +1874,36 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logo) {
         logo.onclick = contarCliquesSecretos;
     }
+// Adicionar ao final do DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    // ... código existente ...
+    
+    // CONFIGURAR NAVEGAÇÃO RESPONSIVA
+    const style = document.createElement('style');
+    style.textContent = `
+        .book-navigation {
+            transition: all 0.3s ease !important;
+        }
+        
+        .page-content {
+            scrollbar-width: thin;
+            scrollbar-color: #8b5cf6 transparent;
+        }
+        
+        .page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .page-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .page-content::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 3px;
+        }
+    `;
+    document.head.appendChild(style);
 });
 
 // Gestos touch para mobile
@@ -1964,3 +1994,9 @@ window.adicionarElementoEspecial = adicionarElementoEspecial;
 window.processarImagemUpload = processarImagemUpload;
 window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
+window.criarSomPagina = criarSomPagina;
+window.tocarSomPagina = tocarSomPagina;
+window.showNavigation = showNavigation;
+window.hideNavigation = hideNavigation;
+window.resetNavigationTimer = resetNavigationTimer;
+window.initNavigationAutoHide = initNavigationAutoHide;
