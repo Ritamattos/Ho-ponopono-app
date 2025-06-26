@@ -1579,3 +1579,74 @@ function abrirModulo(num) {
     const isMobile = window.innerWidth <= 768;
     
     if (
+    // ===== SISTEMA DE ACESSO ADMIN (ADICIONAR NO FINAL) =====
+
+// Função para ativar acesso admin com cliques no logo
+function contarCliquesSecretos() {
+    const agora = Date.now();
+    
+    // Reset se passou mais de 3 segundos
+    if (agora - tempoUltimoClique > 3000) {
+        cliquesSecretos = 0;
+    }
+    
+    cliquesSecretos++;
+    tempoUltimoClique = agora;
+    
+    // Feedback visual no logo
+    const logo = document.getElementById('logoSecret');
+    if (logo) {
+        logo.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            logo.style.transform = 'scale(1)';
+        }, 150);
+    }
+    
+    // Debug no console (temporário para testar)
+    console.log(`Cliques: ${cliquesSecretos}/5`);
+    
+    // Revelar botão admin após 5 cliques
+    if (cliquesSecretos >= 5) {
+        const botaoAdmin = document.getElementById('botaoAdminSecreto');
+        if (botaoAdmin) {
+            botaoAdmin.style.display = 'block';
+            botaoAdmin.style.opacity = '0';
+            botaoAdmin.style.transform = 'scale(0.5)';
+            botaoAdmin.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                botaoAdmin.style.opacity = '1';
+                botaoAdmin.style.transform = 'scale(1)';
+            }, 100);
+            
+            // Mostrar mensagem de confirmação
+            if (window.ToastManager) {
+                ToastManager.success('🔐 Acesso Admin Desbloqueado!');
+            } else {
+                alert('🔐 Acesso Admin Desbloqueado!');
+            }
+        }
+        
+        cliquesSecretos = 0; // Reset contador
+    }
+}
+
+// Garantir que as variáveis globais existam
+if (typeof cliquesSecretos === 'undefined') {
+    var cliquesSecretos = 0;
+}
+if (typeof tempoUltimoClique === 'undefined') {
+    var tempoUltimoClique = 0;
+}
+
+// Forçar re-adicionar o evento ao logo quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    const logo = document.getElementById('logoSecret');
+    if (logo) {
+        // Remover event listeners antigos
+        logo.onclick = null;
+        // Adicionar novo
+        logo.addEventListener('click', contarCliquesSecretos);
+        console.log('✅ Event listener do logo admin ativado');
+    }
+});    
