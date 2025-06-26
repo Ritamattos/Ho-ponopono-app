@@ -1660,6 +1660,51 @@ function atualizarPagina() {
         nextBtn.disabled = currentPage === totalPages;
         nextBtn.style.opacity = currentPage === totalPages ? '0.3' : '1';
     }
+    // SISTEMA DE AUTO-HIDE PARA BOTÕES - ADICIONAR AQUI
+let navigationTimeout;
+let isNavigationVisible = true;
+
+function showNavigation() {
+    const nav = document.querySelector('.book-navigation');
+    if (nav) {
+        nav.style.opacity = '1';
+        nav.style.transform = 'translateX(-50%) translateY(0)';
+        isNavigationVisible = true;
+    }
+}
+
+function hideNavigation() {
+    const nav = document.querySelector('.book-navigation');
+    if (nav) {
+        nav.style.opacity = '0.3';
+        nav.style.transform = 'translateX(-50%) translateY(20px)';
+        isNavigationVisible = false;
+    }
+}
+
+function resetNavigationTimer() {
+    clearTimeout(navigationTimeout);
+    showNavigation();
+    
+    navigationTimeout = setTimeout(() => {
+        hideNavigation();
+    }, 3000); // Esconde após 3 segundos
+}
+
+// Event listeners para mostrar navegação
+function initNavigationAutoHide() {
+    const bookContainer = document.getElementById('flipbook');
+    if (bookContainer) {
+        // Mostrar navegação ao tocar/mover
+        bookContainer.addEventListener('touchstart', resetNavigationTimer);
+        bookContainer.addEventListener('touchmove', resetNavigationTimer);
+        bookContainer.addEventListener('mousemove', resetNavigationTimer);
+        bookContainer.addEventListener('scroll', resetNavigationTimer);
+        
+        // Timer inicial
+        resetNavigationTimer();
+    }
+}
 }
 
 // ===== DIÁRIO =====
