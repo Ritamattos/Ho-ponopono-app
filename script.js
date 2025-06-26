@@ -1531,10 +1531,10 @@ function abrirModulo(num) {
             
             spreadDiv.innerHTML = `
                 <div class="page-left">
-                    <div class="page-content">
-                        <h2>${page.title}</h2>
-                        ${page.content}
-                        <div class="page-number">${index + 1}</div>
+                    <div class="page-content" style="padding: 20px; padding-bottom: 80px; max-height: calc(100vh - 140px); overflow-y: auto;">
+                        <h2 style="margin-bottom: 20px; color: #8b5cf6;">${page.title}</h2>
+                        <div style="line-height: 1.6;">${page.content}</div>
+                        <div class="page-number" style="position: absolute; bottom: 100px; right: 20px; color: #666;">${index + 1}</div>
                     </div>
                 </div>
             `;
@@ -1559,10 +1559,10 @@ function abrirModulo(num) {
             if (leftPage) {
                 leftContent = `
                     <div class="page-left">
-                        <div class="page-content">
-                            <h2>${leftPage.title}</h2>
-                            ${leftPage.content}
-                            <div class="page-number">${i + 1}</div>
+                        <div class="page-content" style="padding: 20px; padding-bottom: 60px;">
+                            <h2 style="margin-bottom: 20px; color: #8b5cf6;">${leftPage.title}</h2>
+                            <div style="line-height: 1.6;">${leftPage.content}</div>
+                            <div class="page-number" style="position: absolute; bottom: 80px; left: 20px; color: #666;">${i + 1}</div>
                         </div>
                     </div>
                 `;
@@ -1571,17 +1571,17 @@ function abrirModulo(num) {
             if (rightPage) {
                 rightContent = `
                     <div class="page-right">
-                        <div class="page-content">
-                            <h2>${rightPage.title}</h2>
-                            ${rightPage.content}
-                            <div class="page-number">${i + 2}</div>
+                        <div class="page-content" style="padding: 20px; padding-bottom: 60px;">
+                            <h2 style="margin-bottom: 20px; color: #8b5cf6;">${rightPage.title}</h2>
+                            <div style="line-height: 1.6;">${rightPage.content}</div>
+                            <div class="page-number" style="position: absolute; bottom: 80px; right: 20px; color: #666;">${i + 2}</div>
                         </div>
                     </div>
                 `;
             } else {
                 rightContent = `
                     <div class="page-right">
-                        <div class="page-content">
+                        <div class="page-content" style="padding: 20px;">
                             <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">
                                 <p style="text-align: center; font-style: italic;">Fim do módulo</p>
                             </div>
@@ -1597,6 +1597,11 @@ function abrirModulo(num) {
     
     document.getElementById('book').style.display = 'block';
     atualizarPagina();
+    
+    // INICIALIZAR AUTO-HIDE DA NAVEGAÇÃO
+    setTimeout(() => {
+        initNavigationAutoHide();
+    }, 500);
 }
 
 function paginaAnterior() {
