@@ -1,81 +1,4 @@
-// FUNÇÃO BÁSICA PARA INICIAR - ADICIONAR NO INÍCIO
-function iniciarApp() {
-    console.log("Botão clicado!"); // Para debug
-    
-    const nomeInput = document.getElementById('name');
-    const splash = document.getElementById('splash');
-    const main = document.getElementById('main');
-    const welcome = document.getElementById('welcome');
-    
-    if (!nomeInput || !splash || !main) {
-        alert('Erro: Elementos não encontrados na página!');
-        return;
-    }
-    
-    const nome = nomeInput.value.trim() || 'Praticante';
-    userName = nome;
-    
-    if (welcome) {
-        welcome.textContent = `Bem-vindo, ${nome}`;
-    }
-    
-    splash.style.display = 'none';
-    main.style.display = 'block';
-    
-    // Carregar dados se existirem
-    if (typeof carregarModulosNaInterface === 'function') {
-        carregarModulosNaInterface();
-    }
-}
-
-// Tornar função global
-window.iniciarApp = iniciarApp;
-// CORREÇÃO TEMPORÁRIA - ADICIONAR NO INÍCIO
-// FUNÇÃO PRINCIPAL CORRIGIDA - SUBSTITUA NO SEU SCRIPT.JS
-// FUNÇÃO PRINCIPAL - SUBSTITUA TODA A FUNÇÃO entrarApp EXISTENTE
-function entrarApp() {
-    console.log('🚀 Função entrarApp chamada');
-    
-    try {
-        const nomeInput = document.getElementById('name');
-        const splash = document.getElementById('splash');
-        const main = document.getElementById('main');
-        const welcome = document.getElementById('welcome');
-        
-        if (!nomeInput || !splash || !main) {
-            console.error('❌ Elementos não encontrados');
-            alert('Erro: Elementos da página não encontrados!');
-            return;
-        }
-        
-        const nome = nomeInput.value.trim();
-        if (!nome) {
-            alert('Por favor, digite seu nome antes de continuar! 📝');
-            nomeInput.focus();
-            return;
-        }
-        
-        userName = nome;
-        
-        if (welcome) {
-            welcome.textContent = `Bem-vindo, ${nome}`;
-        }
-        
-        splash.style.display = 'none';
-        main.style.display = 'block';
-        
-        console.log('✅ App iniciado com sucesso!');
-        
-    } catch (error) {
-        console.error('❌ Erro na função entrarApp:', error);
-        alert('Erro ao iniciar o app: ' + error.message);
-    }
-}
-
-// TORNAR FUNÇÃO GLOBAL IMEDIATAMENTE
-window.entrarApp = entrarApp;
-
-// ... resto do seu código JavaScript ...// ===== HO'OPONOPONO APP - SCRIPT COMPLETO E FUNCIONAL =====
+// ===== HO'OPONOPONO APP - SCRIPT COMPLETO E FUNCIONAL =====
 
 // Desabilitar console em produção
 if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
@@ -169,6 +92,7 @@ const ToastManager = {
         this.show(message, 'error');
     }
 };
+
 // ===== VARIÁVEIS GLOBAIS =====
 let userName = '';
 let currentPage = 1;
@@ -194,6 +118,77 @@ let audioAtualTocando = null;
 // Conteúdo dos módulos (agora persistente)
 let modules = {};
 
+// ===== FUNÇÃO PRINCIPAL CORRIGIDA =====
+function entrarApp() {
+    console.log('🚀 Função entrarApp chamada');
+    
+    try {
+        const nomeInput = document.getElementById('name');
+        const splash = document.getElementById('splash');
+        const main = document.getElementById('main');
+        const welcome = document.getElementById('welcome');
+        
+        // Verificar se os elementos existem
+        if (!nomeInput || !splash || !main) {
+            console.error('❌ Elementos não encontrados');
+            alert('Erro: Elementos da página não encontrados!');
+            return;
+        }
+        
+        const nome = nomeInput.value.trim();
+        if (!nome) {
+            alert('Por favor, digite seu nome antes de continuar! 📝');
+            nomeInput.focus();
+            return;
+        }
+        
+        console.log('✅ Nome válido, iniciando app...');
+        
+        // Definir userName
+        userName = nome;
+        
+        // Salvar usuário
+        StorageManager.save(StorageManager.KEYS.USER, { nome, lastLogin: new Date().toISOString() });
+        
+        // Atualizar welcome
+        if (welcome) {
+            welcome.textContent = `Bem-vindo, ${nome}`;
+        }
+        
+        // Esconder splash e mostrar main
+        splash.style.display = 'none';
+        main.style.display = 'block';
+        
+        // Carregar dados na interface
+        try {
+            if (typeof carregarModulosNaInterface === 'function') {
+                carregarModulosNaInterface();
+            }
+            if (typeof carregarAudiosNaInterface === 'function') {
+                carregarAudiosNaInterface();
+            }
+            if (typeof atualizarDiario === 'function') {
+                atualizarDiario();
+            }
+        } catch (error) {
+            console.error('❌ Erro ao carregar dados:', error);
+        }
+        
+        console.log('✅ App iniciado com sucesso!');
+        
+        // Mostrar toast de sucesso
+        if (typeof ToastManager !== 'undefined') {
+            ToastManager.success(`Bem-vindo, ${nome}! 🌺`);
+        }
+        
+    } catch (error) {
+        console.error('❌ Erro na função entrarApp:', error);
+        alert('Erro ao iniciar o app: ' + error.message);
+    }
+}
+
+// TORNAR FUNÇÃO GLOBAL IMEDIATAMENTE
+window.entrarApp = entrarApp;
 // ===== INICIALIZAÇÃO =====
 async function inicializarDadosPadrao() {
     const modulosPadrao = {
@@ -236,183 +231,19 @@ async function inicializarDadosPadrao() {
                 {
                     title: "Seu Compromisso",
                     content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🙏 Assumindo a Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Você está pronto para assumir 100% de responsabilidade por sua vida?</p><div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.3em; color: #10b981; margin-bottom: 20px;">"Eu me comprometo a praticar Ho'oponopono diariamente"</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #10b981;">Sou grato</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #a78bfa;">Parabéns! Você completou o Módulo 1! 🌺</p>`
-                },
-                {
-    title: "Os Três Selves Havaianos",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🧠 Unihipili - Subconsciente</h3><p style="line-height: 1.8; font-size: 1.1em;">A criança interior que guarda todas as memórias e emoções. É quem sente dor e precisa de cura.</p><h3 style="color: #a78bfa; margin-bottom: 15px; margin-top: 25px;">💭 Uhane - Mente Consciente</h3><p style="line-height: 1.8; font-size: 1.1em;">A parte racional que analisa e julga. Muitas vezes cria mais problemas tentando resolver.</p><h3 style="color: #a78bfa; margin-bottom: 15px; margin-top: 25px;">✨ Aumakua - Eu Superior</h3><p style="line-height: 1.8; font-size: 1.1em;">A conexão divina que tudo sabe e pode curar. Só age quando pedimos perdão.</p><div style="text-align: center; margin-top: 30px; color: #10b981; font-style: italic;">"A cura acontece quando os três selves estão alinhados"</div>`
-},
-{
-    title: "Zero State - Estado Zero",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌟 O Estado de Vazio Divino</h3><p style="line-height: 1.8; font-size: 1.1em;">Zero State é quando você está livre de memórias e programas. Neste estado, a Inteligência Divina flui perfeitamente através de você.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Aqui não há passado nem futuro, apenas o momento presente em total paz e conexão.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 25px; border-radius: 15px; text-align: center; margin: 25px 0;"><p style="font-size: 1.4em; color: #10b981;">∅</p><p style="color: #e9d5ff; margin-top: 10px;">"No Zero State, você É a solução"</p></div><p style="line-height: 1.8; font-size: 1.1em;">O objetivo do Ho'oponopono é retornar constantemente a este estado sagrado.</p>`
-},
-{
-    title: "Inspiração vs Memórias",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💡 Duas Fontes de Ação</h3><p style="line-height: 1.8; font-size: 1.1em;"><strong style="color: #10b981;">Inspiração Divina:</strong> Vem do Zero State. Ações perfeitas, sem esforço, no momento certo.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;"><strong style="color: #ef4444;">Memórias Reativas:</strong> Vem do passado. Repetição de padrões antigos e limitantes.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;">✅ <strong>Sinais de Inspiração:</strong></p><ul style="padding-left: 20px; line-height: 1.6;"><li>Paz interior mesmo em situações difíceis</li><li>Soluções aparecem naturalmente</li><li>Sincronicidades constantes</li><li>Ações fluem sem resistência</li></ul></div><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono limpa as memórias para que a inspiração possa fluir.</p>`
-},
-{
-    title: "Ferramentas de Limpeza",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🧹 Além das 4 Frases</h3><p style="line-height: 1.8; font-size: 1.1em;">Dr. Hew Len ensinou várias ferramentas para diferentes situações:</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 15px;"><strong style="color: #8b5cf6;">🍓 Morangos Azuis:</strong> Para limpeza profunda de traumas</p><p style="font-size: 1.1em; margin-bottom: 15px;"><strong style="color: #10b981;">💧 Água de Ha:</strong> Para purificação e bênçãos</p><p style="font-size: 1.1em; margin-bottom: 15px;"><strong style="color: #f59e0b;">☀️ Luz Solar:</strong> Para energizar e iluminar</p><p style="font-size: 1.1em;"><strong style="color: #ef4444;">❤️ "Eu te amo":</strong> A ferramenta mais poderosa</p></div><p style="line-height: 1.8; font-size: 1.1em;">Use a ferramenta que sentir inspiração para usar em cada momento.</p>`
-},
-{
-    title: "Limpeza Financeira",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💰 Ho'oponopono e Prosperidade</h3><p style="line-height: 1.8; font-size: 1.1em;">Problemas financeiros são memórias de escassez, medo e limitação que podem ser limpas.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 25px; border-radius: 15px; text-align: center; margin: 25px 0;"><p style="font-size: 1.2em; color: #10b981; margin-bottom: 15px;">"Sinto muito pelas memórias de escassez em mim"</p><p style="font-size: 1.2em; color: #10b981; margin-bottom: 15px;">"Me perdoe por criar limitação"</p><p style="font-size: 1.2em; color: #10b981; margin-bottom: 15px;">"Te amo, abundância divina"</p><p style="font-size: 1.2em; color: #10b981;">"Sou grato pela prosperidade que flui"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Quando você limpa as memórias de limitação, a abundância natural do universo pode fluir através de você.</p>`
-},
-{
-    title: "Relacionamentos e Ho'oponopono",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💕 Curando Conexões</h3><p style="line-height: 1.8; font-size: 1.1em;">Conflitos nos relacionamentos são espelhos de memórias internas que precisam ser limpas.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Quando você limpa as memórias em você, automaticamente limpa na outra pessoa também.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong>✨ Prática para Relacionamentos:</strong></p><ol style="padding-left: 20px; line-height: 1.6;"><li>Quando alguém te irritar, agradeça pelo espelho</li><li>Aplique as 4 frases em você mesmo</li><li>Não tente mudar a outra pessoa</li><li>Confie que a limpeza funcionará</li></ol></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">"O que eu vejo no outro, existe em mim"</p>`
-},
-{
-    title: "Saúde e Cura Interior",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌿 Corpo como Espelho da Alma</h3><p style="line-height: 1.8; font-size: 1.1em;">Doenças e sintomas físicos podem ser manifestações de memórias emocionais não resolvidas.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">O Ho'oponopono não substitui tratamento médico, mas pode ajudar na cura emocional que suporta a cura física.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 25px; border-radius: 15px; margin: 25px 0;"><p style="font-size: 1.1em; text-align: center; margin-bottom: 15px;"><strong>🙏 Oração de Cura:</strong></p><p style="color: #10b981; text-align: center; line-height: 1.6;">"Divindade, sinto muito pelas memórias em mim que criaram este desequilíbrio. Me perdoe. Te amo. Sou grato pela perfeita saúde que és."</p></div><p style="line-height: 1.8; font-size: 1.1em;">Lembre-se: você não é responsável por causar a doença, mas pode se responsabilizar por limpar as memórias relacionadas.</p>`
-},
-{
-    title: "Ho'oponopono no Trabalho",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💼 Transformando o Ambiente Profissional</h3><p style="line-height: 1.8; font-size: 1.1em;">Aplique Ho'oponopono silenciosamente em reuniões, conflitos e desafios profissionais.</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 15px;"><strong>📋 Situações Práticas:</strong></p><ul style="padding-left: 20px; line-height: 1.6;"><li><strong>Chefe irritado:</strong> "Sinto muito pela raiva que vejo em mim"</li><li><strong>Colega difícil:</strong> "Me perdoe por julgar"</li><li><strong>Projeto fracassando:</strong> "Te amo, situação perfeita"</li><li><strong>Estresse geral:</strong> "Sou grato pela paz que sou"</li></ul></div><p style="line-height: 1.8; font-size: 1.1em;">Ninguém precisa saber que você está praticando. A limpeza acontece em silêncio e transforma todo o ambiente.</p>`
-},
-{
-    title: "Criando com a Divindade",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🎨 Manifestação através do Zero State</h3><p style="line-height: 1.8; font-size: 1.1em;">No Ho'oponopono, não tentamos manifestar com a mente. Limpamos as memórias e permitimos que a Divindade crie através de nós.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 25px; border-radius: 15px; margin: 25px 0;"><p style="font-size: 1.1em; text-align: center; margin-bottom: 15px;"><strong>🌟 Processo de Criação Divina:</strong></p><ol style="padding-left: 20px; line-height: 1.6;"><li>Identifique o desejo ou problema</li><li>Aplique Ho'oponopono nas memórias relacionadas</li><li>Chegue ao Zero State (vazio/paz)</li><li>Permita que a inspiração divina guie as ações</li><li>Agradeça pela perfeição em manifestação</li></ol></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">"Eu não sei, mas a Divindade sabe e age através de mim"</p>`
-},
-{
-    title: "Perdoando o Imperdoável",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💔 Curando Feridas Profundas</h3><p style="line-height: 1.8; font-size: 1.1em;">Para traumas e mágoas muito profundas, o Ho'oponopono oferece um caminho suave de cura.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Você não precisa perdoar com força de vontade. Apenas limpe as memórias e permita que o perdão aconteça naturalmente.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 25px; border-radius: 15px; margin: 25px 0;"><p style="font-size: 1.1em; text-align: center; margin-bottom: 15px;"><strong>🌸 Para Traumas Profundos:</strong></p><p style="color: #10b981; text-align: center; line-height: 1.8;">"Sinto muito pela dor que carrego.<br>Me perdoe por manter essa memória viva.<br>Te amo, criança ferida em mim.<br>Sou grato pela cura que já está acontecendo."</p></div><p style="line-height: 1.8; font-size: 1.1em;">O perdão verdadeiro é um presente da Divindade, não um esforço pessoal.</p>`
-},
-{
-    title: "Vivendo em Gratidão Constante",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🙏 O Poder Transformador do Obrigado</h3><p style="line-height: 1.8; font-size: 1.1em;">Gratidão é a frequência mais alta do Ho'oponopono. Quando você agradece, automaticamente se alinha com a abundância divina.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 25px; border-radius: 15px; margin: 25px 0;"><p style="font-size: 1.1em; margin-bottom: 15px;"><strong>✨ Gratidão Diária:</strong></p><ul style="padding-left: 20px; line-height: 1.6;"><li>Agradeça ao despertar por estar vivo</li><li>Agradeça pelos problemas que te fazem crescer</li><li>Agradeça pelas pessoas difíceis que te ensinam</li><li>Agradeça pela oportunidade de limpar memórias</li><li>Agradeça por ser um instrumento da Divindade</li></ul></div><div style="text-align: center; margin-top: 30px;"><p style="font-size: 1.4em; color: #10b981; margin-bottom: 10px;">🌺 MAHALO 🌺</p><p style="color: #a78bfa; font-style: italic;">(Obrigado em havaiano - "Que haja respeito mútuo")</p></div>`
-},
-{
-    title: "Seu Novo Começo",
-    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌅 Tornando-se um Praticante</h3><p style="line-height: 1.8; font-size: 1.1em;">Parabéns! Você concluiu uma jornada profunda de 20 páginas sobre Ho'oponopono. Agora você possui as ferramentas para transformar sua vida.</p><div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3)); padding: 30px; border-radius: 20px; text-align: center; margin: 30px 0;"><p style="font-size: 1.3em; color: #ffffff; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">🌟 CERTIFICADO DE CONCLUSÃO 🌟</p><p style="font-size: 1.1em; color: #e9d5ff; margin-bottom: 20px;">Você é agora um praticante de Ho'oponopono</p><p style="font-size: 1.5em; margin: 15px 0; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Sinto muito</p><p style="font-size: 1.5em; margin: 15px 0; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Me perdoe</p><p style="font-size: 1.5em; margin: 15px 0; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Te amo</p><p style="font-size: 1.5em; margin: 15px 0; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Sou grato</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981;">Continue praticando diariamente. O mundo precisa de mais paz, e você é o instrumento! 🌺</p>`
-}
+                }
             ]
         },
         2: {
-    title: "Módulo 2: A Ciência da Responsabilidade",
-    description: "100% de responsabilidade",
-    pages: [
-        {
-            title: "🌟 Bem-vindo ao Módulo 2",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Aprofundando Sua Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Agora que você conhece as 4 frases sagradas, vamos mergulhar mais profundo na filosofia do Ho'oponopono.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.2em; color: #10b981;">"Quando você assume 100% de responsabilidade,</p><p style="font-size: 1.2em; color: #10b981;">você ganha 100% do poder"</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #c4b5fd; font-style: italic;">Prepare-se para descobrir o verdadeiro poder da responsabilidade total! 🌺</p>`
+            title: "Módulo 2: A Ciência da Responsabilidade",
+            description: "100% de responsabilidade",
+            pages: [
+                {
+                    title: "🌟 Bem-vindo ao Módulo 2",
+                    content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Aprofundando Sua Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Agora que você conhece as 4 frases sagradas, vamos mergulhar mais profundo na filosofia do Ho'oponopono.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.2em; color: #10b981;">"Quando você assume 100% de responsabilidade,</p><p style="font-size: 1.2em; color: #10b981;">você ganha 100% do poder"</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #c4b5fd; font-style: italic;">Prepare-se para descobrir o verdadeiro poder da responsabilidade total! 🌺</p>`
+                }
+            ]
         },
-        {
-            title: "🔬 A Base Científica",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🧬 Ho'oponopono e a Ciência</h3><p style="line-height: 1.8; font-size: 1.1em;">Pesquisas modernas confirmam o que os antigos havaianos já sabiam: nossa mente tem poder direto sobre a realidade.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🔬 Evidências:</strong></p><p style="margin: 5px 0;">• Neuroplasticidade cerebral</p><p style="margin: 5px 0;">• Influência quântica do observador</p><p style="margin: 5px 0;">• Epigenética emocional</p></div><p style="line-height: 1.8; font-size: 1.1em;">O Ho'oponopono trabalha com estes princípios científicos naturalmente.</p>`
-        },
-        {
-            title: "⚖️ Responsabilidade vs Culpa",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🎭 A Grande Diferença</h3><p style="line-height: 1.8; font-size: 1.1em;">Responsabilidade Total não significa que você causou tudo. Significa que você pode limpar tudo.</p><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;"><div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 10px;"><h4 style="color: #ef4444; margin-bottom: 8px;">❌ Culpa</h4><p style="font-size: 0.9em;">• Paralisa</p><p style="font-size: 0.9em;">• Vitimiza</p><p style="font-size: 0.9em;">• Aponta dedos</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px;"><h4 style="color: #10b981; margin-bottom: 8px;">✅ Responsabilidade</h4><p style="font-size: 0.9em;">• Empodera</p><p style="font-size: 0.9em;">• Transforma</p><p style="font-size: 0.9em;">• Assume o poder</p></div></div>`
-        },
-        {
-            title: "🧠 Como Funciona a Mente",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🗺️ O Mapa Mental</h3><p style="line-height: 1.8; font-size: 1.1em;">Entenda como pensamentos e memórias criam sua realidade.</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;"><p style="color: #8b5cf6; margin: 8px 0;">🎭 Memórias Inconscientes</p><p style="color: #c4b5fd;">↓</p><p style="color: #f59e0b; margin: 8px 0;">💭 Pensamentos Automáticos</p><p style="color: #c4b5fd;">↓</p><p style="color: #ef4444; margin: 8px 0;">😰 Emoções Reativas</p><p style="color: #c4b5fd;">↓</p><p style="color: #10b981; margin: 8px 0;">🌍 Realidade Externa</p></div><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono limpa na origem!</p>`
-        },
-        {
-            title: "🌊 O Oceano de Memórias",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌊 Mergulhando no Inconsciente</h3><p style="line-height: 1.8; font-size: 1.1em;">Carregamos milhões de memórias que influenciam nossa vida sem percebermos.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🧬 Tipos de Memórias:</strong></p><p style="margin: 5px 0;">• Ancestrais (dos antepassados)</p><p style="margin: 5px 0;">• Familiares (da infância)</p><p style="margin: 5px 0;">• Pessoais (desta vida)</p><p style="margin: 5px 0;">• Coletivas (da humanidade)</p></div><p style="line-height: 1.8; font-size: 1.1em;">A boa notícia: você pode limpar todas!</p>`
-        },
-        {
-            title: "🔍 Identificando Memórias Ativas",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚨 Sinais de Alerta</h3><p style="line-height: 1.8; font-size: 1.1em;">Certas situações "disparam" memórias antigas. Aprenda a reconhecê-las.</p><div style="background: rgba(239, 68, 68, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #ef4444;">🚨 Memórias Ativas:</strong></p><p style="margin: 5px 0;">• Reações emocionais intensas</p><p style="margin: 5px 0;">• Pensamentos obsessivos</p><p style="margin: 5px 0;">• Padrões que se repetem</p><p style="margin: 5px 0;">• Pessoas que sempre irritam</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #10b981;"><strong>"Se te incomoda, é memória para limpar"</strong></p></div>`
-        },
-        {
-            title: "🔄 O Ciclo das Memórias",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌀 Quebrando Padrões</h3><p style="line-height: 1.8; font-size: 1.1em;">Memórias não limpas criam ciclos que se repetem até serem liberadas.</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;"><p style="color: #ef4444; margin: 5px 0;">Situação Trigger</p><p style="color: #c4b5fd;">↓</p><p style="color: #f59e0b; margin: 5px 0;">Memória Ativada</p><p style="color: #c4b5fd;">↓</p><p style="color: #8b5cf6; margin: 5px 0;">Reação Emocional</p><p style="color: #c4b5fd;">↓</p><p style="color: #10b981; margin: 5px 0;">Resultado que Confirma</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">Ho'oponopono quebra este ciclo!</p>`
-        },
-        {
-            title: "⚡ Tipos de Limpeza",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">✨ Instantânea vs Gradual</h3><p style="line-height: 1.8; font-size: 1.1em;">Algumas memórias se dissolvem rapidamente, outras precisam de mais tempo. Ambos são perfeitos.</p><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;"><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px;"><h4 style="color: #10b981; margin-bottom: 8px;">⚡ Instantânea</h4><p style="font-size: 0.9em;">• Alívio imediato</p><p style="font-size: 0.9em;">• Mudança súbita</p><p style="font-size: 0.9em;">• Leveza total</p></div><div style="background: rgba(139, 92, 246, 0.2); padding: 15px; border-radius: 10px;"><h4 style="color: #8b5cf6; margin-bottom: 8px;">🌱 Gradual</h4><p style="font-size: 0.9em;">• Por camadas</p><p style="font-size: 0.9em;">• Melhora progressiva</p><p style="font-size: 0.9em;">• Cura profunda</p></div></div><p style="line-height: 1.8; font-size: 1.1em;">Confie no timing divino!</p>`
-        },
-        {
-            title: "💎 A Regra de Ouro",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌟 O Princípio Fundamental</h3><p style="line-height: 1.8; font-size: 1.1em;">Existe uma regra simples que transforma sua vida quando aplicada consistentemente.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 25px; border-radius: 15px; text-align: center; margin: 25px 0;"><p style="font-size: 1.3em; color: #10b981; margin-bottom: 15px;"><strong>💎 REGRA DE OURO</strong></p><p style="font-size: 1.2em; color: #e9d5ff;">"Tudo que aparece na sua vida</p><p style="font-size: 1.2em; color: #e9d5ff;">é uma oportunidade de limpeza"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Problemas = Presentes disfarçados</p><p style="line-height: 1.8; font-size: 1.1em;">Conflitos = Espelhos para cura</p>`
-        },
-        {
-            title: "🎨 Personalizando as Frases",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🎭 Adaptando para Situações</h3><p style="line-height: 1.8; font-size: 1.1em;">Você pode adaptar as 4 frases mantendo a essência para situações específicas.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">💰 Para Dinheiro:</strong></p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sinto muito pelas memórias de escassez"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Me perdoe por limitar abundância"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Te amo, prosperidade infinita"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sou grato pela abundância"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Nas próximas páginas, veremos mais exemplos!</p>`
-        },
-        {
-            title: "🚶‍♀️ Ho'oponopono em Movimento",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌀 Praticando em Ação</h3><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono não é apenas sentado. Pode ser feito caminhando, trabalhando, vivendo!</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🌟 Práticas Dinâmicas:</strong></p><p style="margin: 5px 0;">• Caminhando: frases com os passos</p><p style="margin: 5px 0;">• Respirando: uma frase por respiração</p><p style="margin: 5px 0;">• Trabalhando: mentalmente durante tarefas</p><p style="margin: 5px 0;">• Esperando: em filas e trânsito</p></div><div style="text-align: center; margin-top: 20px;"><p style="color: #10b981; font-style: italic;">"Transforme cada momento em limpeza"</p></div>`
-        },
-        {
-            title: "😊 Ho'oponopono e Emoções",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🎭 Limpando Estados Emocionais</h3><p style="line-height: 1.8; font-size: 1.1em;">Cada emoção carrega informações sobre memórias. Use-as como guia, não resista.</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong>🎭 Emoções como Mestras:</strong></p><p style="color: #ef4444; margin: 3px 0;"><strong>😠 Raiva:</strong> Memórias de injustiça</p><p style="color: #f59e0b; margin: 3px 0;"><strong>😰 Medo:</strong> Memórias de perigo</p><p style="color: #8b5cf6; margin: 3px 0;"><strong>😢 Tristeza:</strong> Memórias de perda</p><p style="color: #ef4444; margin: 3px 0;"><strong>😤 Frustração:</strong> Memórias de impotência</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #10b981;">Sinta → Aceite → Ho'oponopono → Deixe ir</p></div>`
-        },
-        {
-            title: "💔 Limpeza de Traumas",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌸 Curando Feridas Profundas</h3><p style="line-height: 1.8; font-size: 1.1em;">Para traumas profundos, use abordagem suave. O Ho'oponopono pode curar até feridas ancestrais.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #8b5cf6;">🌸 Para Traumas:</strong></p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sinto muito pela dor que carrego"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Me perdoe por manter ferida viva"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Te amo, criança ferida em mim"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sou grato pela cura que começou"</p></div><p style="line-height: 1.8; font-size: 1.1em; color: #10b981;">Seja gentil e paciente consigo mesmo 💚</p>`
-        },
-        {
-            title: "💰 Limpeza Financeira",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💎 Bloqueios de Abundância</h3><p style="line-height: 1.8; font-size: 1.1em;">Dificuldades financeiras refletem memórias de escassez e desvalorização.</p><div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 10px; margin: 15px 0;"><p style="font-size: 1.1em; margin-bottom: 8px;"><strong style="color: #ef4444;">💸 Memórias Limitantes:</strong></p><p style="font-size: 0.9em; margin: 3px 0;">• "Dinheiro é sujo"</p><p style="font-size: 0.9em; margin: 3px 0;">• "Não mereço abundância"</p><p style="font-size: 0.9em; margin: 3px 0;">• "Só ricos ficam ricos"</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #10b981; margin: 3px 0;">Ao pagar contas: "Te amo, dinheiro que circula"</p><p style="color: #10b981; margin: 3px 0;">Vendo preços: "Me perdoe por limitar prosperidade"</p></div>`
-        },
-        {
-            title: "💕 Relacionamentos",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">👥 Curando Conexões</h3><p style="line-height: 1.8; font-size: 1.1em;">Conflitos relacionais são espelhos de memórias internas. Cure-se e cure a relação.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 15px; border-radius: 10px; margin: 15px 0;"><p style="font-size: 1.1em; margin-bottom: 8px;"><strong style="color: #8b5cf6;">💔 Padrões para Limpar:</strong></p><p style="font-size: 0.9em; margin: 3px 0;">• Codependência → Memórias de abandono</p><p style="font-size: 0.9em; margin: 3px 0;">• Ciúme → Memórias de traição</p><p style="font-size: 0.9em; margin: 3px 0;">• Controle → Memórias de insegurança</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px;"><p style="color: #10b981; text-align: center;"><strong>💖 Prática:</strong></p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em;">Pessoa irrita = agradeça pelo espelho e limpe</p></div>`
-        },
-        {
-            title: "🌿 Saúde e Cura",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌿 Corpo como Espelho</h3><p style="line-height: 1.8; font-size: 1.1em;">Sintomas físicos podem ser manifestações de memórias emocionais não resolvidas.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; text-align: center; margin-bottom: 10px;"><strong>🙏 Oração de Cura:</strong></p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 3px 0;">"Sinto muito pelas memórias que criaram</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 3px 0;">este desequilíbrio. Me perdoe."</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 3px 0;">"Te amo. Sou grato pela perfeita</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 3px 0;">saúde que és, Divindade."</p></div><p style="line-height: 1.8; font-size: 1.1em;">⚠️ Ho'oponopono complementa, nunca substitui tratamento médico.</p>`
-        },
-        {
-            title: "💼 Ho'oponopono no Trabalho",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💼 Transformando o Ambiente</h3><p style="line-height: 1.8; font-size: 1.1em;">Aplique silenciosamente em reuniões, conflitos e desafios profissionais.</p><div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong>📋 Situações Práticas:</strong></p><p style="margin: 3px 0;"><strong>Chefe irritado:</strong> "Sinto muito pela raiva em mim"</p><p style="margin: 3px 0;"><strong>Colega difícil:</strong> "Me perdoe por julgar"</p><p style="margin: 3px 0;"><strong>Projeto complicado:</strong> "Te amo, solução perfeita"</p><p style="margin: 3px 0;"><strong>Estresse:</strong> "Sou grato pela paz"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Ninguém precisa saber. A limpeza é silenciosa e transforma tudo! ✨</p>`
-        },
-        {
-            title: "🎨 Criando com a Divindade",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌟 Manifestação Divina</h3><p style="line-height: 1.8; font-size: 1.1em;">No Ho'oponopono, não tentamos manifestar com a mente. Limpamos e deixamos a Divindade criar.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🌟 Processo Divino:</strong></p><p style="margin: 3px 0;">1. Identifique desejo/problema</p><p style="margin: 3px 0;">2. Aplique Ho'oponopono</p><p style="margin: 3px 0;">3. Chegue ao Zero State</p><p style="margin: 3px 0;">4. Siga a inspiração divina</p><p style="margin: 3px 0;">5. Agradeça pela perfeição</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">"Eu não sei, mas a Divindade sabe"</p>`
-        },
-        {
-            title: "💔 Perdoando o Imperdoável",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💎 Cura de Feridas Profundas</h3><p style="line-height: 1.8; font-size: 1.1em;">Para traumas e mágoas muito profundas, Ho'oponopono oferece um caminho suave.</p><p style="line-height: 1.8; font-size: 1.1em;">Você não precisa perdoar à força. Apenas limpe e deixe o perdão acontecer naturalmente.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 5px 0;">"Sinto muito pela dor que carrego"</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 5px 0;">"Me perdoe por manter essa memória viva"</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 5px 0;">"Te amo, criança ferida em mim"</p><p style="color: #e9d5ff; text-align: center; font-size: 0.95em; margin: 5px 0;">"Sou grato pela cura que já começou"</p></div><p style="line-height: 1.8; font-size: 1.1em;">O perdão verdadeiro é um presente da Divindade, não esforço pessoal.</p>`
-        },
-        {
-            title: "🙏 Gratidão Constante",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌟 O Poder do Obrigado</h3><p style="line-height: 1.8; font-size: 1.1em;">Gratidão é a frequência mais alta do Ho'oponopono. Quando agradece, se alinha com abundância divina.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">✨ Gratidão Diária:</strong></p><p style="margin: 3px 0;">• Ao despertar: por estar vivo</p><p style="margin: 3px 0;">• Pelos problemas: que fazem crescer</p><p style="margin: 3px 0;">• Pelas pessoas difíceis: que ensinam</p><p style="margin: 3px 0;">• Pela oportunidade: de limpar memórias</p></div>            <div style="text-align: center; margin-top: 20px;"><p style="font-size: 1.2em; color: #10b981;">🌺 MAHALO 🌺</p><p style="color: #a78bfa; font-style: italic;">(Obrigado em havaiano)</p></div>`
-        },
-        {
-            title: "🌅 Rotina Matinal",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌅 Começando o Dia Limpo</h3><p style="line-height: 1.8; font-size: 1.1em;">Como você começa o dia determina a qualidade de tudo que vem depois.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">☀️ Rotina Sugerida:</strong></p><p style="margin: 5px 0;"><strong>1.</strong> Ao despertar: "Sou grato por este novo dia"</p><p style="margin: 5px 0;"><strong>2.</strong> No banho: Deixe a água levar as memórias</p><p style="margin: 5px 0;"><strong>3.</strong> No café: "Te amo, dia perfeito"</p><p style="margin: 5px 0;"><strong>4.</strong> Antes de sair: "Me perdoe por qualquer erro"</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">Inicie cada dia em Zero State!</p>`
-        },
-        {
-            title: "🌙 Rotina Noturna",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌙 Limpando o Dia</h3><p style="line-height: 1.8; font-size: 1.1em;">Antes de dormir, limpe tudo que aconteceu durante o dia para não levar memórias para o sonho.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #8b5cf6;">🌙 Limpeza Noturna:</strong></p><p style="margin: 5px 0;"><strong>1.</strong> Revise o dia mentalmente</p><p style="margin: 5px 0;"><strong>2.</strong> Para cada situação difícil: Ho'oponopono</p><p style="margin: 5px 0;"><strong>3.</strong> Agradeça pelas lições</p><p style="margin: 5px 0;"><strong>4.</strong> Durma em paz e gratidão</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #10b981;">"Sinto muito, me perdoe, te amo, sou grato por tudo hoje"</p></div>`
-        },
-        {
-            title: "🚗 Ho'oponopono no Trânsito",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚗 Transformando o Estresse</h3><p style="line-height: 1.8; font-size: 1.1em;">Trânsito é uma oportunidade perfeita para limpeza. Transforme irritação em paz.</p><div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 10px; margin: 15px 0;"><p style="font-size: 1.1em; margin-bottom: 8px;"><strong style="color: #ef4444;">🚨 Situações Comuns:</strong></p><p style="font-size: 0.9em; margin: 3px 0;">• Trânsito parado</p><p style="font-size: 0.9em; margin: 3px 0;">• Motorista imprudente</p><p style="font-size: 0.9em; margin: 3px 0;">• Atraso para compromisso</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px;"><p style="color: #10b981; text-align: center; margin: 3px 0;">Parado: "Sou grato por este tempo para limpar"</p><p style="color: #10b981; text-align: center; margin: 3px 0;">Irritado: "Me perdoe pela impaciência em mim"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Chegue aos destinos em paz! 🕊️</p>`
-        },
-        {
-            title: "🍽️ Limpeza Durante Refeições",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🍽️ Alimentando Corpo e Alma</h3><p style="line-height: 1.8; font-size: 1.1em;">Refeições são momentos sagrados. Limpe a comida e a si mesmo enquanto se alimenta.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🍽️ Prática Alimentar:</strong></p><p style="margin: 5px 0;"><strong>Antes:</strong> "Te amo, alimento sagrado"</p><p style="margin: 5px 0;"><strong>Durante:</strong> Coma conscientemente</p><p style="margin: 5px 0;"><strong>Mastigando:</strong> "Sou grato pela nutrição"</p><p style="margin: 5px 0;"><strong>Depois:</strong> "Me perdoe por qualquer desperdício"</p></div><p style="line-height: 1.8; font-size: 1.1em;">A comida absorve suas intenções e vibração! Abençoe tudo que entra no seu corpo. 🙏</p>`
-        },
-        {
-            title: "💻 Ho'oponopono Digital",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">💻 Limpando o Mundo Virtual</h3><p style="line-height: 1.8; font-size: 1.1em;">Redes sociais e tecnologia também podem ser campos de limpeza e transformação.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 15px; border-radius: 10px; margin: 15px 0;"><p style="font-size: 1.1em; margin-bottom: 8px;"><strong style="color: #8b5cf6;">📱 Momentos Digitais:</strong></p><p style="font-size: 0.9em; margin: 3px 0;">• Post irritante: "Sinto muito pelo julgamento"</p><p style="font-size: 0.9em; margin: 3px 0;">• Notícia ruim: "Me perdoe por atrair isso"</p><p style="font-size: 0.9em; margin: 3px 0;">• Tecnologia lenta: "Te amo, paciência"</p></div><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #10b981;">Antes de postar: "Que isso traga paz ao mundo"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Seja um farol de luz no mundo digital! ✨</p>`
-        },
-        {
-            title: "🏠 Limpeza do Ambiente",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🏠 Purificando Espaços</h3><p style="line-height: 1.8; font-size: 1.1em;">Ambientes absorvem energia. Use Ho'oponopono para limpar casas, escritórios e qualquer lugar.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🏡 Limpeza Espacial:</strong></p><p style="margin: 5px 0;"><strong>Entrando:</strong> "Sou grato por este espaço sagrado"</p><p style="margin: 5px 0;"><strong>Limpando:</strong> "Te amo, harmonia perfeita"</p><p style="margin: 5px 0;"><strong>Organizando:</strong> "Me perdoe por qualquer bagunça"</p><p style="margin: 5px 0;"><strong>Saindo:</strong> "Sinto muito, que a paz permaneça"</p></div><p style="line-height: 1.8; font-size: 1.1em;">Sua casa reflete seu estado interno. Limpe dentro, limpe fora! 🏡</p>`
-        },
-        {
-            title: "🌍 Ho'oponopono Global",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🌍 Curando o Planeta</h3><p style="line-height: 1.8; font-size: 1.1em;">Você pode usar Ho'oponopono para situações mundiais: guerras, pandemias, crises ambientais.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #8b5cf6;">🌍 Para o Mundo:</strong></p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sinto muito pelas memórias de guerra"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Me perdoe por contribuir com o ódio"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Te amo, Terra sagrada"</p><p style="color: #e9d5ff; font-size: 0.95em; margin: 3px 0;">"Sou grato pela paz mundial"</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981; font-style: italic;">Cada pessoa que se cura, cura o mundo inteiro! 🌏</p>`
-        },
-        {
-            title: "👶 Ho'oponopono com Crianças",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">👶 Pequenos Mestres</h3><p style="line-height: 1.8; font-size: 1.1em;">Crianças são naturalmente próximas ao Zero State. Elas podem ensinar muito sobre amor incondicional.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px; margin: 15px 0;"><p style="font-size: 1.1em; margin-bottom: 8px;"><strong style="color: #10b981;">👶 Com Crianças Difíceis:</strong></p><p style="font-size: 0.9em; margin: 3px 0;">• Birra: "Sinto muito pela frustração em mim"</p><p style="font-size: 0.9em; margin: 3px 0;">• Desobediência: "Me perdoe por criar resistência"</p><p style="font-size: 0.9em; margin: 3px 0;">• Agressividade: "Te amo, paz interior"</p></div><div style="background: rgba(139, 92, 246, 0.2); padding: 15px; border-radius: 10px; text-align: center;"><p style="color: #8b5cf6;">Ensine pelo exemplo: crianças sentem sua vibração</p></div><p style="line-height: 1.8; font-size: 1.1em;">Elas nos mostram o que precisa ser curado! 🌟</p>`
-        },
-        {
-            title: "🌟 Sinais de Progresso",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">✨ Como Saber que Está Funcionando</h3><p style="line-height: 1.8; font-size: 1.1em;">Ho'oponopono funciona mesmo quando não vemos resultados imediatos. Aprenda a reconhecer os sinais.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 15px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #10b981;">🌟 Sinais de Limpeza:</strong></p><p style="margin: 3px 0;">• Mais paz nas situações difíceis</p><p style="margin: 3px 0;">• Sincronicidades aumentando</p><p style="margin: 3px 0;">• Pessoas reagindo melhor a você</p><p style="margin: 3px 0;">• Soluções aparecendo naturalmente</p><p style="margin: 3px 0;">• Menos reatividade emocional</p></div><p style="line-height: 1.8; font-size: 1.1em;">Confie no processo, mesmo sem ver resultados externos imediatos! 🙏</p>`
-        },
-        {
-            title: "🎓 Sua Jornada Continua",
-            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Próximos Passos</h3><p style="line-height: 1.8; font-size: 1.1em;">Parabéns! Você completou o Módulo 2 e agora entende profundamente a ciência da responsabilidade total.</p><div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3)); padding: 25px; border-radius: 20px; text-align: center; margin: 25px 0;"><p style="font-size: 1.2em; color: #ffffff; margin-bottom: 15px;">🏆 MÓDULO 2 COMPLETO 🏆</p><p style="font-size: 1.1em; color: #e9d5ff; margin-bottom: 15px;">Você agora é um praticante avançado</p><div style="margin: 15px 0;"><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sinto muito</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Me perdoe</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Te amo</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sou grato</p></div></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981;">Continue praticando! O Módulo 3 te espera! 🌺</p>`
-        }
-    ]
-}, 
         3: {
             title: "Módulo 3: Conectando com o Divino",
             description: "Os três selves",
@@ -427,7 +258,7 @@ async function inicializarDadosPadrao() {
 
     modules = modulosPadrao;
     audiosPersonalizados = [];
-    diaryEntries = StorageManager.loadLocal(StorageManager.KEYS.DIARY, []);
+    diaryEntries = StorageManager.load(StorageManager.KEYS.DIARY, []);
 }
 
 // ===== SISTEMA DE ACESSO ADMIN =====
@@ -467,41 +298,6 @@ function contarCliquesSecretos() {
         
         cliquesSecretos = 0;
     }
-}
-// ===== FUNÇÃO PRINCIPAL DE LOGIN =====
-function entrarApp() {
-    const nome = document.getElementById('name').value.trim();
-    
-    if (!nome) {
-        alert('Por favor, digite seu nome antes de continuar! 📝');
-        return;
-    }
-    
-    userName = nome;
-    
-    // Salvar usuário
-    StorageManager.save(StorageManager.KEYS.USER, { nome, lastLogin: new Date().toISOString() });
-    
-    // Atualizar interface
-    const welcomeElement = document.getElementById('welcome');
-    const splashElement = document.getElementById('splash');
-    const mainElement = document.getElementById('main');
-    
-    if (welcomeElement) {
-        welcomeElement.textContent = `Bem-vindo, ${nome}`;
-    }
-    
-    if (splashElement && mainElement) {
-        splashElement.style.display = 'none';
-        mainElement.style.display = 'block';
-    }
-    
-    // Carregar dados na interface
-    carregarModulosNaInterface();
-    carregarAudiosNaInterface();
-    atualizarDiario();
-    
-    ToastManager.success(`Bem-vindo, ${nome}! 🌺`);
 }
 
 // ===== CARREGAR MÓDULOS NA INTERFACE =====
@@ -670,6 +466,7 @@ function atualizarEstatisticas() {
     
     if (statAudios) statAudios.textContent = audiosPersonalizados.length;
 }
+
 // ===== CRIAR NOVO MÓDULO =====
 function criarNovoModulo() {
     const titulo = document.getElementById('novoModuloTitulo').value.trim();
@@ -728,7 +525,7 @@ function atualizarListaPaginas() {
     `).join('');
 }
 
-// ===== EDITOR DE PÁGINAS - ATUALIZADO =====
+// ===== EDITOR DE PÁGINAS =====
 function editarPagina(index) {
     paginaAtualEditor = index;
     const modulo = modules[moduloAtualEditor];
@@ -750,7 +547,6 @@ function editarPagina(index) {
     }
 }
 
-// Função para extrair conteúdo HTML e criar campos editáveis
 function extrairECriarCamposEditaveis(htmlContent, container) {
     const parser = new DOMParser();
     const doc = parser.parseFromString('<div>' + htmlContent + '</div>', 'text/html');
@@ -764,7 +560,6 @@ function extrairECriarCamposEditaveis(htmlContent, container) {
         } else if (elemento.tagName === 'P') {
             adicionarElementoExistente('texto', elemento.textContent);
         } else if (elemento.tagName === 'DIV' && elemento.innerHTML.includes('Sinto muito')) {
-            // Adicionar quadro das 4 frases
             adicionarElementoEspecial('frases4');
         }
     }
@@ -774,7 +569,6 @@ function extrairECriarCamposEditaveis(htmlContent, container) {
     }
 }
 
-// Função para adicionar elemento existente
 function adicionarElementoExistente(tipo, conteudo) {
     elementosContador++;
     const areaConteudo = document.getElementById('areaConteudo');
@@ -817,7 +611,7 @@ function adicionarElementoExistente(tipo, conteudo) {
     
     areaConteudo.insertAdjacentHTML('beforeend', novoElemento);
 }
-// Função para adicionar elementos especiais (como o quadro das 4 frases)
+
 function adicionarElementoEspecial(tipo) {
     elementosContador++;
     const areaConteudo = document.getElementById('areaConteudo');
@@ -854,8 +648,7 @@ function adicionarElementoEspecial(tipo) {
         areaConteudo.insertAdjacentHTML('beforeend', novoElemento);
     }
 }
-
-// Função principal para adicionar elementos
+// ===== CONTINUAÇÃO DO EDITOR DE PÁGINAS =====
 function adicionarElemento(tipo) {
     elementosContador++;
     const areaConteudo = document.getElementById('areaConteudo');
@@ -895,20 +688,20 @@ function adicionarElemento(tipo) {
                 </div>
             `;
             break;
-       case 'imagem':
-    novoElemento = `
-        <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #ef4444; border-radius: 5px; position: relative;">
-            <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
-            <label style="color: #ef4444; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">🖼️ Imagem</label>
-            <input type="file" accept="image/*" onchange="processarImagemUpload(this, ${elementosContador})" style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #ef4444; border-radius: 3px; color: white; font-size: clamp(14px, 3vw, 16px); margin-bottom: 10px;">
-            <div id="preview-${elementosContador}" style="display: none; text-align: center; margin-top: 10px;">
-                <img id="img-preview-${elementosContador}" style="max-width: 100%; max-height: 200px; border-radius: 5px; border: 1px solid #ef4444;">
-                <p style="color: #ef4444; font-size: clamp(10px, 2.5vw, 12px); margin-top: 5px;">Preview da imagem</p>
-            </div>
-            <input type="hidden" id="base64-${elementosContador}" value="">
-        </div>
-    `;
-    break;
+        case 'imagem':
+            novoElemento = `
+                <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #ef4444; border-radius: 5px; position: relative;">
+                    <button onclick="removerElemento(${elementosContador})" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); border-radius: 50%; font-size: clamp(10px, 2vw, 12px); cursor: pointer;">×</button>
+                    <label style="color: #ef4444; font-size: clamp(11px, 2.5vw, 13px); display: block; margin-bottom: 5px;">🖼️ Imagem</label>
+                    <input type="file" accept="image/*" onchange="processarImagemUpload(this, ${elementosContador})" style="width: 100%; padding: clamp(6px, 2vw, 8px); background: rgba(0,0,0,0.3); border: 1px solid #ef4444; border-radius: 3px; color: white; font-size: clamp(14px, 3vw, 16px); margin-bottom: 10px;">
+                    <div id="preview-${elementosContador}" style="display: none; text-align: center; margin-top: 10px;">
+                        <img id="img-preview-${elementosContador}" style="max-width: 100%; max-height: 200px; border-radius: 5px; border: 1px solid #ef4444;">
+                        <p style="color: #ef4444; font-size: clamp(10px, 2.5vw, 12px); margin-top: 5px;">Preview da imagem</p>
+                    </div>
+                    <input type="hidden" id="base64-${elementosContador}" value="">
+                </div>
+            `;
+            break;
         case 'frases4':
             novoElemento = `
                 <div data-elemento="${elementosContador}" style="margin-bottom: 15px; padding: clamp(8px, 2vw, 10px); border: 1px dashed #a78bfa; border-radius: 5px; position: relative;">
@@ -952,6 +745,7 @@ function removerElemento(id) {
         }
     }
 }
+
 function processarImagemUpload(input, elementoId) {
     const arquivo = input.files[0];
     
@@ -1004,6 +798,7 @@ function processarImagemUpload(input, elementoId) {
     
     reader.readAsDataURL(arquivo);
 }
+
 function adicionarNovaPagina() {
     const modulo = modules[moduloAtualEditor];
     modulo.pages.push({
@@ -1018,7 +813,6 @@ function adicionarNovaPagina() {
     editarPagina(modulo.pages.length - 1);
 }
 
-// FUNÇÃO SALVAR PÁGINA ATUALIZADA
 function salvarPaginaAtual() {
     const titulo = document.getElementById('tituloPagina').value.trim();
     
@@ -1045,12 +839,12 @@ function salvarPaginaAtual() {
             const valor = elemento.querySelector('textarea').value;
             htmlFinal += `<p style="line-height: 1.8; font-size: 1.1em; margin-bottom: 15px;">${valor}</p>`;
         } else if (label.includes('Imagem')) {
-    const hiddenInput = elemento.querySelector('input[type="hidden"]');
-    const base64Value = hiddenInput ? hiddenInput.value : '';
-    if (base64Value) {
-        htmlFinal += `<div style="text-align: center; margin: 20px 0;"><img src="${base64Value}" style="max-width: 100%; border-radius: 10px;" alt="Imagem"></div>`;
-    }
-} else if (label.includes('4 Frases')) {
+            const hiddenInput = elemento.querySelector('input[type="hidden"]');
+            const base64Value = hiddenInput ? hiddenInput.value : '';
+            if (base64Value) {
+                htmlFinal += `<div style="text-align: center; margin: 20px 0;"><img src="${base64Value}" style="max-width: 100%; border-radius: 10px;" alt="Imagem"></div>`;
+            }
+        } else if (label.includes('4 Frases')) {
             const inputs = elemento.querySelectorAll('input');
             htmlFinal += `<div style="background: rgba(139, 92, 246, 0.2); padding: 30px; border-radius: 15px; text-align: center;">`;
             inputs.forEach(input => {
@@ -1093,6 +887,7 @@ function excluirPaginaAtual() {
         }
     }
 }
+
 // ===== SISTEMA DE ÁUDIOS =====
 function adicionarAudio() {
     if (!isAdmin) {
@@ -1210,6 +1005,7 @@ function ocultarStatusUpload() {
         status.style.display = 'none';
     }
 }
+// ===== CONTINUAÇÃO DO SISTEMA DE ÁUDIOS =====
 function criarElementoAudio(audioData) {
     const audioGrid = document.querySelector('#audioContent .modules-grid');
     if (!audioGrid) return;
@@ -1298,6 +1094,7 @@ function excluirAudioCompleto(audioId) {
         ToastManager.error('Erro ao excluir áudio');
     }
 }
+
 function reproduzirAudio(audioId) {
     // Parar qualquer áudio que esteja tocando
     if (audioAtualTocando) {
@@ -1426,6 +1223,7 @@ function tentarReproducaoFallback(audioId, audioData) {
         audioAtualTocando = null;
     }
 }
+
 function iniciarTimerProgresso(audioId, duracao, startTime, audioContext) {
     const intervalId = setInterval(() => {
         if (!audioAtualTocando || !audioAtualTocando.isPlaying) {
@@ -1521,6 +1319,7 @@ function formatarTempo(segundos) {
     
     return `${minutos.toString().padStart(2, '0')}:${seg.toString().padStart(2, '0')}`;
 }
+
 // ===== EFEITOS SONOROS =====
 function criarSomPagina() {
     // Criar som de página virando usando Web Audio API
@@ -1742,7 +1541,9 @@ function atualizarPagina() {
         nextBtn.disabled = currentPage === totalPages;
         nextBtn.style.opacity = currentPage === totalPages ? '0.3' : '1';
     }
-    // SISTEMA DE AUTO-HIDE PARA BOTÕES - ADICIONAR AQUI
+}
+
+// SISTEMA DE AUTO-HIDE PARA BOTÕES
 let navigationTimeout;
 let isNavigationVisible = true;
 
@@ -1787,7 +1588,6 @@ function initNavigationAutoHide() {
         resetNavigationTimer();
     }
 }
-}
 
 // ===== DIÁRIO =====
 function salvarDiario() {
@@ -1824,6 +1624,7 @@ function atualizarDiario() {
         `).join('');
     }
 }
+
 // ===== COMUNIDADE =====
 function publicarPost() {
     const texto = document.getElementById('postText').value.trim();
@@ -1917,8 +1718,10 @@ function comentar(input, postId) {
     input.value = '';
 }
 
-// ===== INICIALIZAÇÃO =====
+// ===== INICIALIZAÇÃO FINAL =====
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🌟 DOM carregado, configurando eventos...');
+    
     // Inicializar dados
     inicializarDadosPadrao();
     
@@ -1929,21 +1732,34 @@ document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('name');
             if (nameInput) nameInput.value = usuarioSalvo.nome;
         }
-    } catch (e) {}
+    } catch (e) {
+        console.log('Primeiro acesso ou erro ao carregar usuário');
+    }
     
     // Event listeners
     const nameInput = document.getElementById('name');
     if (nameInput) {
         nameInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                console.log('⌨️ Enter pressionado no campo nome');
                 entrarApp();
             }
         });
+        console.log('✅ Event listener Enter adicionado ao campo nome');
+    } else {
+        console.error('❌ Campo nome não encontrado');
     }
     
     const btnIniciar = document.getElementById('btnIniciarJornada');
     if (btnIniciar) {
-        btnIniciar.addEventListener('click', entrarApp);
+        // Adicionar event listener adicional por segurança
+        btnIniciar.addEventListener('click', function(e) {
+            console.log('🖱️ Botão clicado via addEventListener');
+            entrarApp();
+        });
+        console.log('✅ Event listener adicional adicionado ao botão');
+    } else {
+        console.error('❌ Botão iniciar jornada não encontrado');
     }
     
     // Configurar logo para acesso admin
@@ -1951,36 +1767,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logo) {
         logo.onclick = contarCliquesSecretos;
     }
-// Adicionar ao final do DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
-    // ... código existente ...
     
-    // CONFIGURAR NAVEGAÇÃO RESPONSIVA
-    const style = document.createElement('style');
-    style.textContent = `
-        .book-navigation {
-            transition: all 0.3s ease !important;
-        }
-        
-        .page-content {
-            scrollbar-width: thin;
-            scrollbar-color: #8b5cf6 transparent;
-        }
-        
-        .page-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .page-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        .page-content::-webkit-scrollbar-thumb {
-            background: #8b5cf6;
-            border-radius: 3px;
-        }
-    `;
-    document.head.appendChild(style);
+    console.log('🎉 Todos os event listeners configurados!');
 });
 
 // Gestos touch para mobile
@@ -2033,10 +1821,10 @@ if (window.location.hostname !== 'localhost' && window.location.hostname !== '12
     });
 }
 
-// Funções globais para compatibilidade
+// Funções globais para compatibilidade - TODAS AS FUNÇÕES EXPOSTAS
 window.ToastManager = ToastManager;
 window.contarCliquesSecretos = contarCliquesSecretos;
-window.entrarApp = entrarApp;
+window.entrarApp = entrarApp; // ESTA É A MAIS IMPORTANTE
 window.abrirLoginAdmin = abrirLoginAdmin;
 window.fecharLoginAdmin = fecharLoginAdmin;
 window.fazerLoginAdmin = fazerLoginAdmin;
@@ -2071,6 +1859,5 @@ window.adicionarElementoEspecial = adicionarElementoEspecial;
 window.processarImagemUpload = processarImagemUpload;
 window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
-window.criarSomPagina = criarSomPagina;
-window.tocarSomPagina = tocarSomPagina;
-window.entrarApp = entrarApp;
+
+console.log('🌺 Ho\'oponopono App carregado com sucesso!');
