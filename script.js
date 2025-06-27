@@ -623,6 +623,56 @@ async function inicializarDadosPadrao() {
                 {
                     title: "Os Três Selves",
                     content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+                    }
+            ]
+        },
+        6: {
+            title: "Módulo 6: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+                    }
+            ]
+        },
+        7: {
+            title: "Módulo 7: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+                    }
+            ]
+        },
+        8: {
+            title: "Módulo 8: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+                    }
+            ]
+        },
+        9: {
+            title: "Módulo 9: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+                    }
+            ]
+        },
+        10: {
+            title: "Módulo 10: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
                 }
             ]
         }
