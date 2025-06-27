@@ -962,7 +962,11 @@ async function inicializarDadosPadrao() {
                     }
             ]
         },
-        8: {
+       8: {
+            title: "Módulo 8: Ho'oponopono e Manifestação Consciente",
+            description: "Ho'oponopono e Manifestação: Criando do Vazio",
+            pages: [
+                {
             title: "Ho'oponopono e Manifestação: Criando do Vazio",
     content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">✨ O Segredo da Criação Consciente</h3><p style="line-height: 1.8; font-size: 1.1em;">Manifestação verdadeira não acontece através de desejos ou força de vontade, mas através do vazio criado pela limpeza de Ho'oponopono. Quando você limpa memórias limitantes, cria espaço para que o divino manifeste através de você.</p><h3 style="color: #a78bfa; margin-bottom: 15px; margin-top: 25px;">🌟 O que Vamos Explorar:</h3><p style="line-height: 1.8; font-size: 1.1em;">• Como a limpeza interior cria espaço para milagres</p><p style="line-height: 1.8; font-size: 1.1em;">• Dissolvendo bloqueios à abundância através de Ho'oponopono</p><p style="line-height: 1.8; font-size: 1.1em;">• Manifestando a partir da inspiração divina, não do ego</p><div style="text-align: center; margin-top: 30px; color: #10b981; font-style: italic;">"Quando você se esvazia, o universo se enche de possibilidades"</div>`
   },
@@ -1038,7 +1042,7 @@ async function inicializarDadosPadrao() {
   {
     title: "Manifestação e Serviço: Quando Dar é Receber",
     content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🎁 O Círculo Sagrado da Abundância</h3><p style="line-height: 1.8; font-size: 1.1em;">A manifestação mais poderosa acontece quando seus desejos estão alinhados com o serviço ao bem maior. Quando você manifesta para servir, o universo conspira para apoiá-lo porque você se tornou um canal para o amor divino.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Ho'oponopono limpa as memórias de separação entre "dar" e "receber", revelando que eles são aspectos da mesma energia. Quando você dá com amor puro, recebe automaticamente.</p><div style="background: rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.1em; margin-bottom: 10px;">🌟 <strong>Manifestação Através do Serviço:</strong></p><ul style="padding-left: 20px; line-height: 1.6;"><li>Pergunte: "Como posso servir?" antes de manifestar</li><li>Inclua o bem-estar de outros em suas visões</li><li>Ofereça seus dons únicos ao mundo</li><li>Confie que servir abundantemente traz abundância</li></ul></div><div style="background: rgba(139, 92, 246, 0.2); padding: 25px; border-radius: 15px; text-align: center; margin: 25px 0;"><p style="color: #e9d5ff; margin-top: 10px;">"Manifesto abundância para que eu possa servir com ainda mais amor."</p></div><p style="line-height: 1.8; font-size: 1.1em;">Quando você vive para servir, sua vida se torna uma manifestação contínua de milagres, pois você se alinha com o próprio impulso criativo do universo.</p><p style="line-height: 1.8; font-size: 1.1em; margin-top: 15px;">Ho'oponopono é a chave mestra que abre todas as portas da manifestação consciente. Ao limpar continuamente as memórias que criam resistência, você se torna um co-criador desperto, manifestando não apenas para si, mas para o bem de toda a criação.</p><div style="background: rgba(255, 215, 0, 0.2); padding: 25px; border-radius: 15px; text-align: center; margin: 25px 0;"><p style="color: #fff3cd; margin-top: 10px; font-weight: bold;">"Eu sou o amor divino em ação, manifestando milagres através do serviço. Sinto muito, me perdoe, te amo, obrigado(a)."</p></div>`
-                    }
+    }
             ]
         },
         9: {
