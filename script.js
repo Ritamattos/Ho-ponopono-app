@@ -731,7 +731,7 @@ async function inicializarDadosPadrao() {
             ]
         },
         6: {
-            title: "Módulo 6: Ho'oponopono Avançado - Parte 1",
+            title: "Módulo 6: Ho'oponopono Avançado",
             description: "Ho'oponopono Avançado: Dominando a Arte da Limpeza",
             pages: [
                 {
