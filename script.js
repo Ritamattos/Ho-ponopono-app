@@ -620,6 +620,7 @@ async function inicializarDadosPadrao() {
             title: "Módulo 5: Transformação Profunda",
             description: "Transformação Profunda Através do Ho'oponopono",
             pages: [
+                {
                 title: "Transformação Profunda Através do Ho'oponopono",
         content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🦋 A Metamorfose da Alma</h3><p style="line-height: 1.8; font-size: 1.1em;">Chegou o momento de aplicar tudo que você aprendeu para criar mudanças reais e duradouras em sua vida. Este módulo é sobre transformação profunda.</p><h3 style="color: #a78bfa; margin-bottom: 15px; margin-top: 25px;">🌟 O que Vamos Explorar:</h3><p style="line-height: 1.8; font-size: 1.1em;">• Redesenhando sua identidade</p><p style="line-height: 1.8; font-size: 1.1em;">• Curando padrões geracionais</p><p style="line-height: 1.8; font-size: 1.1em;">• Manifestando sua missão de vida</p><div style="text-align: center; margin-top: 30px; color: #10b981; font-style: italic;">"A transformação acontece de dentro para fora"</div>`
     },
