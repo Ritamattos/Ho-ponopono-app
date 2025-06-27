@@ -415,6 +415,16 @@ async function inicializarDadosPadrao() {
                 {
                     title: "Os Três Selves",
                     content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
+        }
+            ]
+        },
+        4: {
+            title: "Módulo 3: Conectando com o Divino",
+            description: "Os três selves",
+            pages: [
+                {
+                    title: "Os Três Selves",
+                    content: `<div style="text-align: center;"><h3 style="color: #a78bfa;">Unihipili - Criança Interior</h3><p>Guarda todas as memórias</p></div>`
                 }
             ]
         }
