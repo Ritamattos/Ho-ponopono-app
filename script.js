@@ -1156,6 +1156,10 @@ async function inicializarDadosPadrao() {
             ]
         },
         10: {
+            title: "Módulo 10: Maestria Absoluta e Legado Eterno",
+            description: "Maestria Absoluta",
+            pages: [
+                {
             title: "Maestria Absoluta - O Grau Mais Elevado",
         content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">👑 O Ápice da Jornada Espiritual</h3><p style="line-height: 1.8; font-size: 1.1em;">Bem-vindo ao módulo final desta jornada épica! Maestria Absoluta em Ho'oponopono significa tornar-se um canal tão puro que a Divindade flui através de você sem obstáculos.</p><h3 style="color: #a78bfa; margin-bottom: 15px; margin-top: 25px;">🌟 Características do Mestre Absoluto:</h3><p style="line-height: 1.8; font-size: 1.1em;">• Presença que automaticamente transforma ambientes</p><p style="line-height: 1.8; font-size: 1.1em;">• Palavras que carregam frequência de cura instantânea</p><p style="line-height: 1.8; font-size: 1.1em;">• Ações sempre inspiradas pela sabedoria divina</p><div style="text-align: center; margin-top: 30px; color: #10b981; font-style: italic;">"Maestria não é perfeição humana - é transparência divina absoluta"</div>`
     },
