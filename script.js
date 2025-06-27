@@ -2106,4 +2106,4 @@ window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
 window.criarSomPagina = criarSomPagina;
 window.tocarSomPagina = tocarSomPagina;
-
+window.entrarApp = entrarApp;
