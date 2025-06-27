@@ -405,7 +405,20 @@ async function inicializarDadosPadrao() {
         {
             title: "🎓 Sua Jornada Continua",
             content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Próximos Passos</h3><p style="line-height: 1.8; font-size: 1.1em;">Parabéns! Você completou o Módulo 2 e agora entende profundamente a ciência da responsabilidade total.</p><div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3)); padding: 25px; border-radius: 20px; text-align: center; margin: 25px 0;"><p style="font-size: 1.2em; color: #ffffff; margin-bottom: 15px;">🏆 MÓDULO 2 COMPLETO 🏆</p><p style="font-size: 1.1em; color: #e9d5ff; margin-bottom: 15px;">Você agora é um praticante avançado</p><div style="margin: 15px 0;"><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sinto muito</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Me perdoe</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Te amo</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sou grato</p></div></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981;">Continue praticando! O Módulo 3 te espera! 🌺</p>`
-        }
+             }
+            ]
+        },
+        2: {
+          title: "Módulo 2: A Ciência da Responsabilidade",
+    description: "100% de responsabilidade",
+    pages: [
+        {
+            title: "🌟 Bem-vindo ao Módulo 2",
+            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Aprofundando Sua Jornada</h3><p style="line-height: 1.8; font-size: 1.1em;">Agora que você conhece as 4 frases sagradas, vamos mergulhar mais profundo na filosofia do Ho'oponopono.</p><div style="background: rgba(139, 92, 246, 0.2); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0;"><p style="font-size: 1.2em; color: #10b981;">"Quando você assume 100% de responsabilidade,</p><p style="font-size: 1.2em; color: #10b981;">você ganha 100% do poder"</p></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #c4b5fd; font-style: italic;">Prepare-se para descobrir o verdadeiro poder da responsabilidade total! 🌺</p>`
+        },
+         {
+             title: "🎓 Sua Jornada Continua",
+            content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Próximos Passos</h3><p style="line-height: 1.8; font-size: 1.1em;">Parabéns! Você completou o Módulo 2 e agora entende profundamente a ciência da responsabilidade total.</p><div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3)); padding: 25px; border-radius: 20px; text-align: center; margin: 25px 0;"><p style="font-size: 1.2em; color: #ffffff; margin-bottom: 15px;">🏆 MÓDULO 2 COMPLETO 🏆</p><p style="font-size: 1.1em; color: #e9d5ff; margin-bottom: 15px;">Você agora é um praticante avançado</p><div style="margin: 15px 0;"><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sinto muito</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Me perdoe</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Te amo</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sou grato</p></div></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981;">Continue praticando! O Módulo 3 te espera! 🌺</p>`
     ]
 }
 };        
