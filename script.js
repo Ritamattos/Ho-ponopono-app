@@ -32,81 +32,48 @@ function iniciarApp() {
 window.iniciarApp = iniciarApp;
 // CORREÇÃO TEMPORÁRIA - ADICIONAR NO INÍCIO
 // FUNÇÃO PRINCIPAL CORRIGIDA - SUBSTITUA NO SEU SCRIPT.JS
+// FUNÇÃO PRINCIPAL - SUBSTITUA TODA A FUNÇÃO entrarApp EXISTENTE
 function entrarApp() {
     console.log('🚀 Função entrarApp chamada');
     
-    const nomeInput = document.getElementById('name');
-    const splash = document.getElementById('splash');
-    const main = document.getElementById('main');
-    const welcome = document.getElementById('welcome');
-    
-    // Verificar se os elementos existem
-    if (!nomeInput) {
-        console.error('❌ Campo nome não encontrado');
-        alert('Erro: Campo nome não encontrado!');
-        return;
-    }
-    
-    if (!splash) {
-        console.error('❌ Tela splash não encontrada');
-        alert('Erro: Tela inicial não encontrada!');
-        return;
-    }
-    
-    if (!main) {
-        console.error('❌ Tela principal não encontrada');
-        alert('Erro: Tela principal não encontrada!');
-        return;
-    }
-    
-    const nome = nomeInput.value.trim();
-    console.log('📝 Nome digitado:', nome);
-    
-    if (!nome) {
-        console.log('❌ Nome vazio');
-        if (typeof ToastManager !== 'undefined') {
-            ToastManager.error('Por favor, digite seu nome antes de continuar! 📝');
-        } else {
-            alert('Por favor, digite seu nome antes de continuar! 📝');
+    try {
+        const nomeInput = document.getElementById('name');
+        const splash = document.getElementById('splash');
+        const main = document.getElementById('main');
+        const welcome = document.getElementById('welcome');
+        
+        if (!nomeInput || !splash || !main) {
+            console.error('❌ Elementos não encontrados');
+            alert('Erro: Elementos da página não encontrados!');
+            return;
         }
-        nomeInput.focus();
-        return;
-    }
-    
-    console.log('✅ Nome válido, iniciando app...');
-    
-    // Definir userName
-    userName = nome;
-    
-    // Atualizar welcome
-    if (welcome) {
-        welcome.textContent = `Bem-vindo, ${nome}`;
-        console.log('✅ Welcome atualizado');
-    }
-    
-    // Esconder splash e mostrar main
-    splash.style.display = 'none';
-    main.style.display = 'block';
-    
-    console.log('✅ Telas alternadas - splash escondida, main visível');
-    console.log('🎉 App iniciado com sucesso!');
-    
-    // Carregar dados se as funções existirem
-    if (typeof carregarModulosNaInterface === 'function') {
-        carregarModulosNaInterface();
-    }
-    if (typeof carregarAudiosNaInterface === 'function') {
-        carregarAudiosNaInterface();
-    }
-    if (typeof atualizarDiario === 'function') {
-        atualizarDiario();
-    }
-    
-    // Mostrar toast de sucesso se disponível
-    if (typeof ToastManager !== 'undefined') {
-        ToastManager.success(`Bem-vindo, ${nome}! 🌺`);
+        
+        const nome = nomeInput.value.trim();
+        if (!nome) {
+            alert('Por favor, digite seu nome antes de continuar! 📝');
+            nomeInput.focus();
+            return;
+        }
+        
+        userName = nome;
+        
+        if (welcome) {
+            welcome.textContent = `Bem-vindo, ${nome}`;
+        }
+        
+        splash.style.display = 'none';
+        main.style.display = 'block';
+        
+        console.log('✅ App iniciado com sucesso!');
+        
+    } catch (error) {
+        console.error('❌ Erro na função entrarApp:', error);
+        alert('Erro ao iniciar o app: ' + error.message);
     }
 }
+
+// TORNAR FUNÇÃO GLOBAL IMEDIATAMENTE
+window.entrarApp = entrarApp;
 
 // ... resto do seu código JavaScript ...// ===== HO'OPONOPONO APP - SCRIPT COMPLETO E FUNCIONAL =====
 
