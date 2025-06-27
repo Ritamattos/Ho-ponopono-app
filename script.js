@@ -419,9 +419,9 @@ async function inicializarDadosPadrao() {
          {
              title: "🎓 Sua Jornada Continua",
             content: `<h3 style="color: #a78bfa; margin-bottom: 15px;">🚀 Próximos Passos</h3><p style="line-height: 1.8; font-size: 1.1em;">Parabéns! Você completou o Módulo 2 e agora entende profundamente a ciência da responsabilidade total.</p><div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.3)); padding: 25px; border-radius: 20px; text-align: center; margin: 25px 0;"><p style="font-size: 1.2em; color: #ffffff; margin-bottom: 15px;">🏆 MÓDULO 2 COMPLETO 🏆</p><p style="font-size: 1.1em; color: #e9d5ff; margin-bottom: 15px;">Você agora é um praticante avançado</p><div style="margin: 15px 0;"><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sinto muito</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Me perdoe</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Te amo</p><p style="font-size: 1.1em; margin: 5px 0; color: #ffffff;">Sou grato</p></div></div><p style="line-height: 1.8; font-size: 1.1em; text-align: center; color: #10b981;">Continue praticando! O Módulo 3 te espera! 🌺</p>`
-    ]
 }
-};        
+            ]
+        },       
 
     modules = modulosPadrao;
     audiosPersonalizados = [];
